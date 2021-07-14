@@ -26,6 +26,7 @@ export default Component.extend({
 
     canonicalUrlScratch: alias('post.canonicalUrlScratch'),
     customExcerptScratch: alias('post.customExcerptScratch'),
+    orderScratch: alias('post.orderScratch'),
     codeinjectionFootScratch: alias('post.codeinjectionFootScratch'),
     codeinjectionHeadScratch: alias('post.codeinjectionHeadScratch'),
     metaDescriptionScratch: alias('post.metaDescriptionScratch'),
@@ -179,6 +180,21 @@ export default Component.extend({
             post.set('customExcerpt', excerpt);
 
             return post.validate({property: 'customExcerpt'}).then(() => this.savePostTask.perform());
+        },
+
+        setOrder(order) {
+            let post = this.post;
+            let currentOrder = post.get('order');
+
+            console.log(`New :${order}, prev ${currentOrder} `);
+
+            if (order === currentOrder) {
+                return;
+            }
+
+            post.set('order', order);
+
+            return post.validate({property: 'order'}).then(() => this.savePostTask.perform());
         },
 
         setHeaderInjection(code) {

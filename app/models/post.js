@@ -79,6 +79,7 @@ export default Model.extend(Comparable, ValidationEngine, {
     createdAtUTC: attr('moment-utc'),
     excerpt: attr('string'),
     customExcerpt: attr('string'),
+    order: attr('number'),
     featured: attr('boolean', {defaultValue: false}),
     canonicalUrl: attr('string'),
     codeinjectionFoot: attr('string', {defaultValue: ''}),
@@ -137,6 +138,7 @@ export default Model.extend(Comparable, ValidationEngine, {
 
     canonicalUrlScratch: boundOneWay('canonicalUrl'),
     customExcerptScratch: boundOneWay('customExcerpt'),
+    orderScratch: boundOneWay('order'),
     codeinjectionFootScratch: boundOneWay('codeinjectionFoot'),
     codeinjectionHeadScratch: boundOneWay('codeinjectionHead'),
     metaDescriptionScratch: boundOneWay('metaDescription'),

@@ -70,6 +70,7 @@
                 {{/unless}}
 
 
+
                 {{#if this.showVisibilityInput}}
                     {{#if (feature "multipleProducts")}}
                         <GhFormGroup @errors={{this.post.errors}} @hasValidated={{this.post.hasValidated}} @property="visibility">
@@ -113,6 +114,20 @@
                     />
                     <GhErrorMessage @errors={{this.post.errors}} @property="customExcerpt" data-test-error="custom-excerpt" />
                 </GhFormGroup>
+
+                {{#unless this.session.user.isContributor}}
+                    <div class="form-group">
+                        <label for="tag-input">Order</label>
+                        <GhTextInput
+                            @class="post-setting-slug"
+                            @id="order"
+                            @name="post-setting-order"
+                            @value={{readonly this.orderScratch}}
+                            @input={{action (mut this.orderScratch) value="target.value"}}
+                            @focus-out={{action "setOrder" this.orderScratch}}
+                            />
+                    </div>
+                {{/unless}}
 
                 {{#unless this.session.user.isAuthorOrContributor}}
                     <GhFormGroup @class="for-select" @errors={{this.post.errors}} @hasValidated={{this.post.hasValidated}} @property="authors" data-test-input="authors">

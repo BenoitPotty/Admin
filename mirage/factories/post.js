@@ -7,6 +7,7 @@ export default Factory.extend({
     createdAt: '2015-09-11T09:44:29.871Z',
     createdBy: 1,
     customExcerpt: null,
+    order: 0,
     customTemplate: null,
     description(i) { return `Title for post ${i}.`; },
     featured: false,
