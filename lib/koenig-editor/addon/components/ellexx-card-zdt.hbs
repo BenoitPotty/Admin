@@ -20,14 +20,16 @@
             {{on "blur" this.updateZdtNumber}}
         >
     </div>
-    <div>
+    <div class="mb4">
         <textarea
             placeholder="Content"
+            maxlength="140"
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_content"
             value={{this.payload.zdt_content}}
-            {{on "blur" this.updateZdtContent}}
+            {{on "input" this.updateZdtContent}}
         ></textarea>
+        <div class="tr f-small">{{this.zdtContentLenght}} / 140</div>
     </div>
     <div>
         <input
@@ -48,5 +50,8 @@
             value={{this.payload.zdt_link}}
             {{on "blur" this.updateZdtLink}}
         />
+        {{#if invalidUrl}}
+            <div class="tr f-small red pb4">URL is not valid</div>
+        {{/if}}
     </div>
 </KoenigCard>
