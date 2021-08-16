@@ -1,0 +1,52 @@
+<KoenigCard
+    @icon="ellexx/card-indicator-zdt"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div>
+        <input
+            type="text"
+            placeholder="Number"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zdt_number"
+            value={{this.payload.zdt_number}}
+            {{on "blur" this.updateZdtNumber}}
+        >
+    </div>
+    <div>
+        <textarea
+            placeholder="Content"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zdt_content"
+            value={{this.payload.zdt_content}}
+            {{on "blur" this.updateZdtContent}}
+        ></textarea>
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Source"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zdt_source"
+            value={{this.payload.zdt_source}}
+            {{on "blur" this.updateZdtSource}}
+        />
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Link"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zdt_link"
+            value={{this.payload.zdt_link}}
+            {{on "blur" this.updateZdtLink}}
+        />
+    </div>
+</KoenigCard>
