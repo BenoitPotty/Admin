@@ -13,13 +13,13 @@
     <div class="mb4">
         <textarea
             placeholder="Frage"
-            maxlength="{{this.fdw_frage_max}}"
+            maxlength="{{this.fdw_sentence_max}}"
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="fdw_frage"
-            value={{this.payload.fdw_frage}}
+            name="fdw_sentence"
+            value={{this.payload.fdw_sentence}}
             {{on "input" this.updateFieldWithLength}}
         ></textarea>
-        <div class="tr f-small">{{this.fdw_frage_length}} / {{this.fdw_frage_max}}</div>
+        <div class="tr f-small">{{this.fdw_sentence_length}} / {{this.fdw_sentence_max}}</div>
     </div>
     <div>
         <input
