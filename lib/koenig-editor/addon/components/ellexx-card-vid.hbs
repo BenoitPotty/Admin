@@ -1,0 +1,37 @@
+<KoenigCard
+    @icon="ellexx/card-indicator-fdw"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div class="mb4">
+        <textarea
+            placeholder="Frage"
+            maxlength="{{this.fdw_frage_max}}"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="fdw_frage"
+            value={{this.payload.fdw_frage}}
+            {{on "input" this.updateFieldWithLength}}
+        ></textarea>
+        <div class="tr f-small">{{this.fdw_frage_length}} / {{this.fdw_frage_max}}</div>
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Link"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="fdw_link"
+            value={{this.payload.fdw_link}}
+            {{on "blur" this.updateLink}}
+        />
+        {{#if fdw_link_invalid}}
+            <div class="tr f-small red pb4">URL is nicht gültig</div>
+        {{/if}}
+    </div>
+</KoenigCard>
