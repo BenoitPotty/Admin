@@ -17,19 +17,19 @@
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_number"
             value={{this.payload.zdt_number}}
-            {{on "blur" this.updateZdtNumber}}
+            {{on "blur" this.updateField}}
         >
     </div>
     <div class="mb4">
         <textarea
             placeholder="Inhalt Kontext"
-            maxlength="140"
+            maxlength="{{this.zdt_content_max}}"
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_content"
             value={{this.payload.zdt_content}}
-            {{on "input" this.updateZdtContent}}
+            {{on "input" this.updateFieldWithLength}}
         ></textarea>
-        <div class="tr f-small">{{this.zdtContentLenght}} / 140</div>
+        <div class="tr f-small">{{this.zdt_content_length}} / {{this.zdt_content_max}}</div>
     </div>
     <div>
         <input
@@ -38,7 +38,7 @@
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_source"
             value={{this.payload.zdt_source}}
-            {{on "blur" this.updateZdtSource}}
+            {{on "blur" this.updateField}}
         />
     </div>
     <div>
@@ -48,9 +48,9 @@
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_link"
             value={{this.payload.zdt_link}}
-            {{on "blur" this.updateZdtLink}}
+            {{on "blur" this.updateLink}}
         />
-        {{#if invalidUrl}}
+        {{#if zdt_link_invalid}}
             <div class="tr f-small red pb4">URL is nicht gültig</div>
         {{/if}}
     </div>
