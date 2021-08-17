@@ -1,0 +1,47 @@
+<KoenigCard
+    @icon="ellexx/card-indicator-zit"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div class="mb4">
+        <textarea
+            placeholder="Zitat"
+            maxlength="{{this.zit_quote_max}}"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zit_quote"
+            value={{this.payload.zit_quote}}
+            {{on "input" this.updateFieldWithLength}}
+        ></textarea>
+        <div class="tr f-small">{{this.zit_quote_length}} / {{this.zit_quote_max}}</div>
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Autor"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zit_author"
+            value={{this.payload.zit_author}}
+            {{on "blur" this.updateField}}
+        />
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Link"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="zit_link"
+            value={{this.payload.zit_link}}
+            {{on "blur" this.updateLink}}
+        />
+        {{#if fdw_link_invalid}}
+            <div class="tr f-small red pb4">URL is nicht gültig</div>
+        {{/if}}
+    </div>
+</KoenigCard>
