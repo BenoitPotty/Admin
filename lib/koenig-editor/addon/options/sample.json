@@ -1,0 +1,44 @@
+{
+    "version": "0.3.1",
+    "atoms": [],
+    "cards": [
+        [
+            "embed",
+            {
+                "url": "https://www.youtube.com/watch?v=PsnWpHjfrD8",
+                "html": "<iframe width=\"200\" height=\"113\" src=\"https://www.youtube.com/embed/PsnWpHjfrD8?feature=oembed\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture\" allowfullscreen></iframe>",
+                "type": "video",
+                "metadata": {
+                    "title": "Der «Geldcast» mit Patrizia Laeri",
+                    "author_name": "Fabio Canetg",
+                    "author_url": "https://www.youtube.com/channel/UCVxO3HhMY7MuAp8rI71AxaA",
+                    "height": 113,
+                    "width": 200,
+                    "version": "1.0",
+                    "provider_name": "YouTube",
+                    "provider_url": "https://www.youtube.com/",
+                    "thumbnail_height": 360,
+                    "thumbnail_width": 480,
+                    "thumbnail_url": "https://i.ytimg.com/vi/PsnWpHjfrD8/hqdefault.jpg"
+                },
+                "caption": "zezerzre"
+            }
+        ],
+        [
+            "image",
+            {
+                "src": "https://ellexx.rokka.io/stage_ellexx_com/80bc89/pre-launch-mobile.svg",
+                "width": 375,
+                "height": 812,
+                "caption": "description"
+            }
+        ]
+    ],
+    "markups": [],
+    "sections": [
+        [10, 0],
+        [10, 1],
+        [1, "p", []]
+    ],
+    "ghostVersion": "4.0"
+}
