@@ -1,0 +1,50 @@
+<KoenigCard
+    @icon="ellexx/card-indicator-zit"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div class="mb4">
+        <input
+            type="text"
+            placeholder="Titel"
+            maxlength="{{this.lnk_title_max}}"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="lnk_title"
+            value={{this.payload.lnk_title}}
+            {{on "input" this.updateFieldWithLength}}
+        />
+        <div class="tr f-small">{{this.lnk_title_length}} / {{this.lnk_title_max}}</div>
+    </div>
+    <div class="mb4">
+        <input
+            type="text"
+            placeholder="Quelle"
+            maxlength="{{this.lnk_source_max}}"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="lnk_source"
+            value={{this.payload.lnk_source}}
+            {{on "input" this.updateFieldWithLength}}
+        />
+        <div class="tr f-small">{{this.lnk_source_length}} / {{this.lnk_source_max}}</div>
+    </div>
+    <div>
+        <input
+            type="text"
+            placeholder="Link"
+            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+            name="lnk_link"
+            value={{this.payload.lnk_link}}
+            {{on "blur" this.updateLink}}
+        />
+        {{#if fdw_link_invalid}}
+            <div class="tr f-small red pb4">URL is nicht gültig</div>
+        {{/if}}
+    </div>
+</KoenigCard>
