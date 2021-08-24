@@ -10,15 +10,17 @@
     @editor={{this.editor}}
 >
 
-    <div>
+    <div class="mb4">
         <input
             type="text"
+            maxlength="{{this.zdt_number_max}}"
             placeholder="Zahl"
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="zdt_number"
             value={{this.payload.zdt_number}}
-            {{on "blur" this.updateField}}
+            {{on "input" this.updateFieldWithLength}}
         >
+        <div class="tr f-small">{{this.zdt_number_length}} / {{this.zdt_number_max}}</div>
     </div>
     <div class="mb4">
         <textarea
