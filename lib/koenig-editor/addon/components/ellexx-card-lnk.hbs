@@ -41,9 +41,9 @@
             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
             name="lnk_link"
             value={{this.payload.lnk_link}}
-            {{on "blur" this.updateLink}}
+            {{on "input" this.updateLink}}
         />
-        {{#if fdw_link_invalid}}
+        {{#if lnk_link_invalid}}
             <div class="tr f-small red pb4">URL is nicht gültig</div>
         {{/if}}
     </div>
