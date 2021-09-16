@@ -12,6 +12,30 @@
         <h6>Money Talk Facts</h6>
         <p></p>
         <p></p>
+        <div class="underline">Sprache</div>
+        <p></p>
+        <div>
+            <input
+                type="radio"
+                id="lang_de"
+                value="de"
+                name='mtf_lang'
+                checked={{eq 'de' this.payload.mtf_lang}}
+                {{on "change" this.updateField}}
+            >
+            <label for="lang_de">Deutsch</label>
+            <input
+                type="radio"
+                id="lang_en"
+                value="en"
+                name='mtf_lang'
+                checked={{eq 'en' this.payload.mtf_lang}}
+                {{on "change" this.updateField}}
+            >
+            <label for="lang_en">Englisch</label>
+        </div>
+        <p></p>
+        <p></p>
         <div class="underline">Persönlichkeit</div>
         <p></p>
         <table>
