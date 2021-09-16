@@ -60,20 +60,20 @@
             <tr>
                 <td class="sans-serif"><input
                         type="checkbox"
-                        name="mtf_assets_display"
-                        checked={{this.payload.mtf_assets_display}}
+                        name="mtf_type_display"
+                        checked={{this.payload.mtf_type_display}}
                         {{on "change" this.updateCheckbox}}
                     /></td>
-                <td class="sans-serif tr"><label>Sparkonto</label></td>
+                <td class="sans-serif tr">Sparer:in</td>
                 <td class="sans-serif tc"><input
                         type="range"
-                        name="mtf_assets"
+                        name="mtf_type"
                         min="0"
                         max="10"
-                        value={{this.payload.mtf_assets}}
+                        value={{this.payload.mtf_type}}
                         {{on "blur" this.updateField}}
                     /></td>
-                <td class="sans-serif tl"><label>Aktion</label></td>
+                <td class="sans-serif tl"><label>Investor:in</label></td>
             </tr>
             <tr>
                 <td class="sans-serif"><input
@@ -92,6 +92,42 @@
                         {{on "blur" this.updateField}}
                     /></td>
                 <td class="sans-serif tl"><label>Bauchgefühl</label></td>
+            </tr>
+            <tr>
+                <td class="sans-serif"><input
+                        type="checkbox"
+                        name="mtf_payment_method_display"
+                        checked={{this.payload.mtf_payment_method_display}}
+                        {{on "change" this.updateCheckbox}}
+                    /></td>
+                <td class="sans-serif tr"><label>Cash</label></td>
+                <td class="sans-serif tc"><input
+                        type="range"
+                        name="mtf_payment_method"
+                        min="0"
+                        max="10"
+                        value={{this.payload.mtf_payment_method}}
+                        {{on "blur" this.updateField}}
+                    /></td>
+                <td class="sans-serif tl"><label>Digital Payment</label></td>
+            </tr>
+            <tr>
+                <td class="sans-serif"><input
+                        type="checkbox"
+                        name="mtf_assets_display"
+                        checked={{this.payload.mtf_assets_display}}
+                        {{on "change" this.updateCheckbox}}
+                    /></td>
+                <td class="sans-serif tr"><label>Sparkonto</label></td>
+                <td class="sans-serif tc"><input
+                        type="range"
+                        name="mtf_assets"
+                        min="0"
+                        max="10"
+                        value={{this.payload.mtf_assets}}
+                        {{on "blur" this.updateField}}
+                    /></td>
+                <td class="sans-serif tl"><label>Aktion</label></td>
             </tr>
             <tr>
                 <td class="sans-serif"><input
@@ -164,15 +200,15 @@
             </div>
             <div class="gh-list-row">
                 <div class="gh-list-cell">
-                    Grösster Ausgabeposten :
+                    Beruf :
                 </div>
                 <div class="gh-list-cell">
                     <input
                         type="text"
-                        placeholder="Grösster Ausgabeposten"
+                        placeholder="Beruf"
                         class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-                        name="mtf_largest_expense_item"
-                        value={{this.payload.mtf_largest_expense_item}}
+                        name="mtf_job"
+                        value={{this.payload.mtf_job}}
                         {{on "blur" this.updateField}}
                     />
                 </div>
@@ -188,6 +224,51 @@
                         class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
                         name="mtf_income"
                         value={{this.payload.mtf_income}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Schulden :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Schulden"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_debts"
+                        value={{this.payload.mtf_debts}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Grösster Ausgabeposten :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Grösster Ausgabeposten"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_largest_expense_item"
+                        value={{this.payload.mtf_largest_expense_item}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Vermögen :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Vermögen"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_capital"
+                        value={{this.payload.mtf_capital}}
                         {{on "blur" this.updateField}}
                     />
                 </div>
