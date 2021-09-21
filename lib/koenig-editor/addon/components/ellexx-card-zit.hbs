@@ -11,6 +11,26 @@
 >
 
     <div class="mb4">
+        <div class="mb4">
+            <input
+                type="radio"
+                id="usage_quick_content"
+                value="quick-content"
+                name='zit_usage'
+                checked={{eq 'quick-content' this.payload.zit_usage}}
+                {{on "change" this.updateUsage}}
+            >
+            <label for="usage_quick_content">Quick Content</label>
+            <input
+                type="radio"
+                id="usage_post"
+                value="artikel"
+                name='zit_usage'
+                checked={{eq 'artikel' this.payload.zit_usage}}
+                {{on "change" this.updateUsage}}
+            >
+            <label for="usage_post">Artikel</label>
+        </div>
         <textarea
             placeholder="Zitat"
             maxlength="{{this.zit_quote_max}}"
