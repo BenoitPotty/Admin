@@ -121,7 +121,7 @@
             {{#if (eq this.payload.type 'video')}}
                 <div class="gh-list-row">
                     <div class="gh-list-cell">
-                        Video url :
+                        Video:
                     </div>
                     <div class="gh-list-cell">
                         <input
@@ -130,7 +130,7 @@
                             class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
                             name="tbi_video_link"
                             value={{this.payload.tbi_video_link}}
-                            {{on "blur" this.updateLink}}
+                            {{on "change" this.updateYoutubeLink}}
                         />
                         {{#if tbi_video_link_invalid}}
                             <div class="tr f-small red pb4">URL is nicht gültig</div>
@@ -140,5 +140,10 @@
             {{/if}}
         </div>
         <p></p>
+        <div class="tc">
+            {{#if this.videoCode}}
+                <iframe width="607" height="350" src="https://www.youtube.com/embed/{{this.payload.tbi_video_link_code}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            {{/if}}
+        </div>
     </div>
 </KoenigCard>
