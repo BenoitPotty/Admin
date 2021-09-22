@@ -1,0 +1,168 @@
+<KoenigCard
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+    <div class="m4 pa4 ba">
+        <h6>Teaser block</h6>
+        <p></p>
+        <p></p>
+        <div class="underline">Infografik</div>
+        <p></p>
+        <div>
+            {{!-- <input
+                type="radio"
+                id="lang_de"
+                value="de"
+                name='mtf_lang'
+                checked={{eq 'de' this.payload.mtf_lang}}
+                {{on "change" this.updateField}}
+            >
+            <label for="lang_de">Deutsch</label>
+            <input
+                type="radio"
+                id="lang_en"
+                value="en"
+                name='mtf_lang'
+                checked={{eq 'en' this.payload.mtf_lang}}
+                {{on "change" this.updateField}}
+            >
+            <label for="lang_en">Englisch</label> --}}
+        </div>
+        <p></p>
+        <p></p>
+        <div class="underline">Video</div>
+        <p></p>
+        <p></p>
+        <p></p>
+        <div class="underline">Quote</div>
+        <p></p>
+        <div class="gh-list">
+            {{!-- <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Alter :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        placeholder="Alter"
+                        type="number"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_age"
+                        value={{this.payload.mtf_age}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Kinder :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        placeholder="Kinder"
+                        type="number"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_children"
+                        value={{this.payload.mtf_children}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Ort :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Ort"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_location"
+                        value={{this.payload.mtf_location}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Beruf :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Beruf"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_job"
+                        value={{this.payload.mtf_job}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell gh-list-cellwidth-1-3">
+                    Einkommen :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Einkommen"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_income"
+                        value={{this.payload.mtf_income}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Schulden :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Schulden"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_debts"
+                        value={{this.payload.mtf_debts}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Grösster Ausgabeposten :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Grösster Ausgabeposten"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_largest_expense_item"
+                        value={{this.payload.mtf_largest_expense_item}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Vermögen :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Vermögen"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mtf_capital"
+                        value={{this.payload.mtf_capital}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div> --}}
+        </div>
+    </div>
+</KoenigCard>
