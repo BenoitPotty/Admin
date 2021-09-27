@@ -43,9 +43,12 @@ export default Route.extend(ShortcutsRoute, {
 
     init() {
         this._super(...arguments);
+
         this.router.on('routeDidChange', () => {
             this.notifications.displayDelayed();
         });
+
+        this.ui.initBodyDragHandlers();
     },
 
     beforeModel() {
@@ -143,6 +146,10 @@ export default Route.extend(ShortcutsRoute, {
         }
     },
 
+    willDestroy() {
+        this.ui.cleanupBodyDragHandlers();
+    },
+
     async prepareApp() {
         await this.config.fetchUnauthenticated();
 
@@ -152,7 +159,12 @@ export default Route.extend(ShortcutsRoute, {
             InitSentryForEmber({
                 dsn: this.config.get('sentry_dsn'),
                 environment: this.config.get('sentry_env'),
-                release: `ghost@${this.config.get('version')}`
+                release: `ghost@${this.config.get('version')}`,
+                beforeSend(event) {
+                    event.tags = event.tags || {};
+                    event.tags.grammarly = !!document.querySelector('[data-gr-ext-installed]');
+                    return event;
+                }
             });
         }
 

@@ -20,6 +20,7 @@ export default class MembersAccessController extends Controller {
     @service membersUtils;
     @service settings;
     @service store;
+    @service session;
 
     @tracked showLeavePortalModal = false;
     @tracked showLeaveRouteModal = false;
@@ -38,6 +39,7 @@ export default class MembersAccessController extends Controller {
     @tracked stripePlanError = '';
 
     @tracked portalPreviewUrl = '';
+    @tracked offersExist = true;
 
     portalPreviewGuid = Date.now().valueOf();
 
@@ -284,6 +286,7 @@ export default class MembersAccessController extends Controller {
 
     @action
     confirmProductSave() {
+        this.updatePortalPreview({forceRefresh: true});
         return this.fetchProducts.perform();
     }
 
@@ -316,13 +319,6 @@ export default class MembersAccessController extends Controller {
 
     @task({drop: true})
     *saveSettingsTask(options) {
-        if (!this.settings.get('defaultContentVisibility')) {
-            const oldValue = this.settings.changedAttributes().defaultContentVisibility?.[0];
-            if (oldValue) {
-                this.settings.set('defaultContentVisibility', oldValue);
-            }
-        }
-
         if (!this.feature.get('multipleProducts')) {
             yield this.validateStripePlans({updatePortalPreview: false});
 
@@ -342,6 +338,10 @@ export default class MembersAccessController extends Controller {
             return result;
         } else {
             if (this.settings.get('errors').length !== 0) {
+                return;
+            }
+            // When no filer is selected in `Specific tier(s)` option
+            if (!this.settings.get('defaultContentVisibility')) {
                 return;
             }
             const result = yield this.settings.save();

@@ -13,6 +13,7 @@ export default class SessionService extends ESASessionService {
     @service notifications;
     @service router;
     @service settings;
+    @service ui;
     @service upgradeStatus;
     @service whatsNew;
 

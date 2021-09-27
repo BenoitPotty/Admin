@@ -57,7 +57,7 @@ export default AuthenticatedRoute.extend(ShortcutsRoute, {
 
         preview() {
             if (this.controller.post.isDraft) {
-                this.controller.send('togglePostPreviewModal');
+                this.controller.send('openPostPreviewModal');
             } else {
                 window.open(this.controller.post.previewUrl, '_blank', 'noopener');
             }
@@ -65,10 +65,6 @@ export default AuthenticatedRoute.extend(ShortcutsRoute, {
 
         authorizationFailed() {
             this.controller.send('toggleReAuthenticateModal');
-        },
-
-        redirectToContentScreen(displayName) {
-            this.transitionTo(displayName === 'page' ? 'pages' : 'posts');
         },
 
         willTransition(transition) {

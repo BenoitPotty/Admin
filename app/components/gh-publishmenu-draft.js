@@ -24,6 +24,18 @@ export default class GhPublishMenuDraftComponent extends Component {
         return this.session.user.isAdmin && (this.totalMemberCount === 0 || this.countTotalMembersTask.isRunning);
     }
 
+    get nextActionName() {
+        return this.args.post.emailOnly ? 'send' : 'publish';
+    }
+
+    get showEmailSection() {
+        return this.args.canSendEmail && this.args.post.emailRecipientFilter !== 'none';
+    }
+
+    get showEmailOnlyInput() {
+        return this.feature.emailOnlyPosts && this.args.post.isPost;
+    }
+
     constructor() {
         super(...arguments);
         this.args.post.set('publishedAtBlogTZ', this.args.post.publishedAtUTC);
@@ -59,6 +71,11 @@ export default class GhPublishMenuDraftComponent extends Component {
 
             this.args.post.validate();
         }
+    }
+
+    @action
+    setDistributionAction(type) {
+        this.args.setDistributionAction(type);
     }
 
     @action

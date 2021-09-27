@@ -21,7 +21,7 @@ Router.map(function () {
     this.route('signup', {path: '/signup/:token'});
     this.route('reset', {path: '/reset/:token'});
 
-    this.route('about');
+    this.route('whatsnew');
     this.route('site');
     this.route('dashboard');
     this.route('launch');
@@ -48,9 +48,17 @@ Router.map(function () {
 
     this.route('settings');
     this.route('settings.general', {path: '/settings/general'});
-    this.route('settings.membership', {path: '/settings/members'});
+    this.route('settings.membership', {path: '/settings/members'}, function () {
+        this.route('offer');
+    });
     this.route('settings.members-email', {path: '/settings/members-email'});
     this.route('settings.code-injection', {path: '/settings/code-injection'});
+
+    this.route('settings.design', {path: '/settings/design'}, function () {
+        this.route('customize');
+        this.route('change-theme');
+        this.route('advanced');
+    });
 
     // this.route('settings.products', {path: '/settings/products'});
     // this.route('settings.product.new', {path: '/settings/product/new'});

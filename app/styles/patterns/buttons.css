@@ -261,7 +261,11 @@ fieldset[disabled] .gh-btn {
     width: 1em;
     height: 1em;
     margin-right: 0.6em;
-    fill: #fff;
+    fill: var(--white);
+}
+
+.gh-btn-white svg {
+    fill: var(--darkgrey);
 }
 
 .gh-btn-icon svg.gh-spinner {
@@ -361,6 +365,28 @@ svg.gh-btn-icon-right {
     color: var(--red);
 }
 
+.gh-btn-action-icon {
+    margin-right: 10px
+}
+
+.gh-btn-action-icon svg {
+    height: 16px;
+    width: 16px;
+    margin: 0;
+}
+
+.gh-btn-action-icon:not(.icon-only) svg {
+    margin-right: 10px;
+}
+
+.gh-btn-action-icon svg path {
+    stroke: currentColor;
+}
+
+.gh-btn-label-green {
+    color: var(--green);
+}
+
 
 /*
 /* Button Variations
@@ -428,8 +454,6 @@ Usage: CTA buttons grouped together horizontally.
 
 .gh-btn-group .gh-btn-group-selected span {
     color: var(--black);
-    padding-left: 12px;
-    padding-right: 12px;
     background: var(--white) !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
@@ -449,10 +473,10 @@ Usage: CTA buttons grouped together horizontally.
 }
 
 .gh-btn-group.icons .gh-btn-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     margin-right: 0;
-    fill: var(--midgrey);
+    fill: var(--darkgrey);
 }
 
 .gh-btn-group.icons .gh-btn-group-selected svg {

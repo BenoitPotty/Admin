@@ -35,6 +35,18 @@ input {
     user-select: text;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+    display: none;
+}
+
+
+input[type=number] {
+    appearance: textfield;
+}
+
 ::-webkit-input-placeholder {
     color: var(--midlightgrey);
     font-weight: 400;
@@ -52,6 +64,12 @@ input {
 .disabled-overlay {
     pointer-events: none;
     opacity: 0.5;
+}
+
+.form-col2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 24px;
 }
 
 /* Form Groups
@@ -214,7 +232,7 @@ select.error {
 
 .gh-select:focus,
 select:focus {
-    background: color-mod(var(--input-bg-color) l(-3%));
+    border-color: var(--lightgrey-d1);
 }
 
 textarea {
@@ -234,6 +252,16 @@ textarea {
     color: var(--midlightgrey);
     border-color: var(--whitegrey);
     opacity: 1.0;
+}
+
+.gh-input-percentage-label {
+    display: block;
+    content: "hello";
+    position: absolute;
+    right: 10px;
+    top: 6px;
+    font-size: 1.3rem;
+    color: var(--midgrey);
 }
 
 

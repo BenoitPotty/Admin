@@ -35,6 +35,7 @@ export default Component.extend({
     twitterDescriptionScratch: alias('post.twitterDescriptionScratch'),
     twitterTitleScratch: alias('post.twitterTitleScratch'),
     slugValue: boundOneWay('post.slug'),
+    uuidValue: boundOneWay('post.uuid'),
 
     seoDescription: or('metaDescriptionScratch', 'customExcerptScratch', 'post.excerpt'),
     facebookDescription: or('ogDescriptionScratch', 'customExcerptScratch', 'seoDescription', 'post.excerpt', 'settings.description', ''),
@@ -43,7 +44,6 @@ export default Component.extend({
     twitterDescription: or('twitterDescriptionScratch', 'customExcerptScratch', 'seoDescription', 'post.excerpt', 'settings.description', ''),
     twitterImage: or('post.twitterImage', 'post.featureImage', 'settings.twitterImage', 'settings.coverImage'),
     twitterTitle: or('twitterTitleScratch', 'seoTitle'),
-
     showVisibilityInput: or('session.user.isOwnerOnly', 'session.user.isAdminOnly', 'session.user.isEditor'),
     showEmailNewsletter: or('session.user.isOwnerOnly', 'session.user.isAdminOnly', 'session.user.isEditor'),
 
@@ -69,10 +69,12 @@ export default Component.extend({
             urlParts.push(this.post.slug);
         }
 
-        return urlParts.join(' > ');
+        return urlParts.join(' › ');
     }),
 
     willDestroyElement() {
+        this._super(...arguments);
+
         let post = this.post;
         let errors = post.get('errors');
 

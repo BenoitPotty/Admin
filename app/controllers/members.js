@@ -5,6 +5,7 @@ import ghostPaths from 'ghost-admin/utils/ghost-paths';
 import moment from 'moment';
 import {A} from '@ember/array';
 import {action} from '@ember/object';
+import {capitalize} from '@ember/string';
 import {ghPluralize} from 'ghost-admin/helpers/gh-pluralize';
 import {resetQueryParams} from 'ghost-admin/helpers/reset-query-params';
 import {inject as service} from '@ember/service';
@@ -37,18 +38,26 @@ export default class MembersController extends Controller {
         'label',
         {paidParam: 'paid'},
         {searchParam: 'search'},
-        {orderParam: 'order'}
+        {orderParam: 'order'},
+        {filterParam: 'filter'}
     ];
 
     @tracked members = A([]);
     @tracked searchText = '';
     @tracked searchParam = '';
+    @tracked filterParam = null;
+    @tracked softFilterParam = null;
     @tracked paidParam = null;
     @tracked label = null;
     @tracked orderParam = null;
     @tracked modalLabel = null;
     @tracked showLabelModal = false;
     @tracked showDeleteMembersModal = false;
+    @tracked showUnsubscribeMembersModal = false;
+    @tracked showAddMembersLabelModal = false;
+    @tracked showRemoveMembersLabelModal = false;
+    @tracked filters = A([]);
+    @tracked softFilters = A([]);
 
     @tracked _availableLabels = A([]);
 
@@ -90,7 +99,7 @@ export default class MembersController extends Controller {
     }
 
     get showingAll() {
-        return !this.searchParam && !this.paidParam && !this.label;
+        return !this.searchParam && !this.paidParam && !this.label && !this.filterParam && !this.softFilterParam;
     }
 
     get availableOrders() {
@@ -146,15 +155,36 @@ export default class MembersController extends Controller {
     }
 
     get isFiltered() {
-        return !!(this.label || this.paidParam || this.searchParam);
+        return !!(this.label || this.paidParam || this.searchParam || this.filterParam);
+    }
+
+    get filterColumns() {
+        const defaultColumns = ['name', 'email'];
+        const availableFilters = this.filters.length ? this.filters : this.softFilters;
+        return availableFilters.map((filter) => {
+            return filter.type;
+        }).filter((f, idx, arr) => {
+            return arr.indexOf(f) === idx;
+        }).filter(d => !defaultColumns.includes(d));
+    }
+
+    get filterColumnLabels() {
+        const filterColumnLabelMap = {
+            'subscriptions.plan_interval': 'Billing period',
+            subscribed: 'Subscribed to email',
+            'subscriptions.status': 'Subscription Status'
+        };
+        return this.filterColumns.map((d) => {
+            return filterColumnLabelMap[d] ? filterColumnLabelMap[d] : capitalize(d.replace(/_/g, ' '));
+        });
     }
 
     getApiQueryObject({params, extraFilters = []} = {}) {
-        let {label, paidParam, searchParam} = params ? params : this;
+        let {label, paidParam, searchParam, filterParam} = params ? params : this;
 
         let filters = [];
 
-        filters.concat(extraFilters);
+        filters = filters.concat(extraFilters);
 
         if (label) {
             filters.push(`label:'${label}'`);
@@ -166,6 +196,10 @@ export default class MembersController extends Controller {
             } else {
                 filters.push('status:free');
             }
+        }
+
+        if (filterParam && this.feature.get('membersFiltering')) {
+            filters.push(filterParam);
         }
 
         let searchQuery = searchParam ? {search: searchParam} : {};
@@ -186,6 +220,39 @@ export default class MembersController extends Controller {
     @action
     changeOrder(order) {
         this.orderParam = order.value;
+    }
+
+    @action
+    applyFilter(filterStr, filters) {
+        this.softFilters = A([]);
+        this.filterParam = filterStr || null;
+        this.filters = filters;
+    }
+
+    @action
+    applySoftFilter(filterStr, filters) {
+        this.softFilters = filters;
+        this.softFilterParam = filterStr || null;
+        let {label, paidParam, searchParam, orderParam} = this;
+        this.fetchMembersTask.perform({label, paidParam, searchParam, orderParam, filterParam: filterStr});
+    }
+
+    @action
+    resetSoftFilter() {
+        if (this.softFilters.length > 0 || !!this.softFilterParam) {
+            this.softFilters = A([]);
+            this.softFilterParam = null;
+            this.fetchMembersTask.perform();
+        }
+    }
+
+    @action
+    resetFilter() {
+        this.softFilters = A([]);
+        this.softFilterParam = null;
+        this.filters = A([]);
+        this.filterParam = null;
+        this.fetchMembersTask.perform();
     }
 
     @action
@@ -257,8 +324,38 @@ export default class MembersController extends Controller {
     }
 
     @action
+    toggleUnsubscribeMembersModal() {
+        this.showUnsubscribeMembersModal = !this.showUnsubscribeMembersModal;
+    }
+
+    @action
+    toggleAddMembersLabelModal() {
+        this.showAddMembersLabelModal = !this.showAddMembersLabelModal;
+    }
+
+    @action
+    toggleRemoveMembersLabelModal() {
+        this.showRemoveMembersLabelModal = !this.showRemoveMembersLabelModal;
+    }
+
+    @action
     deleteMembers() {
         return this.deleteMembersTask.perform();
+    }
+
+    @action
+    unsubscribeMembers() {
+        return this.unsubscribeMembersTask.perform();
+    }
+
+    @action
+    addLabelToMembers(selectedLabel) {
+        return this.addLabelToMembersTask.perform(selectedLabel);
+    }
+
+    @action
+    removeLabelFromMembers(selectedLabel) {
+        return this.removeLabelFromMembersTask.perform(selectedLabel);
     }
 
     // Tasks -------------------------------------------------------------------
@@ -277,7 +374,7 @@ export default class MembersController extends Controller {
     @task({restartable: true})
     *fetchMembersTask(params) {
         // params is undefined when called as a "refresh" of the model
-        let {label, paidParam, searchParam, orderParam} = typeof params === 'undefined' ? this : params;
+        let {label, paidParam, searchParam, orderParam, filterParam} = typeof params === 'undefined' ? this : params;
 
         if (!searchParam) {
             this.resetSearch();
@@ -291,11 +388,13 @@ export default class MembersController extends Controller {
             || label !== this._lastLabel
             || paidParam !== this._lastPaidParam
             || searchParam !== this._lastSearchParam
-            || orderParam !== this._orderParam;
+            || orderParam !== this._lastOrderParam
+            || filterParam !== this._lastFilterParam;
         this._lastLabel = label;
         this._lastPaidParam = paidParam;
         this._lastSearchParam = searchParam;
         this._lastOrderParam = orderParam;
+        this._lastFilterParam = filterParam;
 
         // unless we have a forced reload, do not re-fetch the members list unless it's more than a minute old
         // keeps navigation between list->details->list snappy
@@ -372,10 +471,83 @@ export default class MembersController extends Controller {
         return response.meta;
     }
 
+    @task({drop: true})
+    *unsubscribeMembersTask() {
+        const query = new URLSearchParams(this.getApiQueryObject());
+        const unsubscribeUrl = `${this.ghostPaths.url.api('members/bulk')}?${query}`;
+        // response contains details of which members failed to be unsubscribe
+        const response = yield this.ajax.put(unsubscribeUrl, {
+            data: {
+                action: 'unsubscribe',
+                meta: {}
+            }
+        });
+
+        // reset and reload
+        this.store.unloadAll('member');
+        this.reload();
+
+        this.membersStats.invalidate();
+        this.membersStats.fetchCounts();
+
+        return response?.bulk?.meta;
+    }
+
+    @task({drop: true})
+    *addLabelToMembersTask(selectedLabel) {
+        const query = new URLSearchParams(this.getApiQueryObject());
+        const addLabelUrl = `${this.ghostPaths.url.api('members/bulk')}?${query}`;
+        const response = yield this.ajax.put(addLabelUrl, {
+            data: {
+                action: 'addLabel',
+                meta: {
+                    label: {
+                        id: selectedLabel
+                    }
+                }
+            }
+        });
+
+        // reset and reload
+        this.store.unloadAll('member');
+        this.reload();
+
+        return response?.bulk?.meta;
+    }
+
+    @task({drop: true})
+    *removeLabelFromMembersTask(selectedLabel) {
+        const query = new URLSearchParams(this.getApiQueryObject());
+        const removeLabelUrl = `${this.ghostPaths.url.api('members/bulk')}?${query}`;
+        const response = yield this.ajax.put(removeLabelUrl, {
+            data: {
+                action: 'removeLabel',
+                meta: {
+                    label: {
+                        id: selectedLabel
+                    }
+                }
+            }
+        });
+
+        // reset and reload
+        this.store.unloadAll('member');
+        this.reload();
+
+        return response?.bulk?.meta;
+    }
     // Internal ----------------------------------------------------------------
 
     resetSearch() {
         this.searchText = '';
+    }
+
+    resetFilters(params) {
+        if (!params?.filterParam) {
+            this.filters = A([]);
+            this.softFilterParam = null;
+            this.softFilters = A([]);
+        }
     }
 
     reload(params) {
