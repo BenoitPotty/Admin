@@ -19,6 +19,8 @@ export default Component.extend(DropdownMixin, {
     // Helps track whether the dropdown is open or closes, or in a transition to either
     isOpen: false,
 
+    onClose() {},
+
     // Managed the toggle between the fade-in and fade-out classes
     fadeIn: computed('isOpen', 'closing', function () {
         return this.isOpen && !this.closing;
@@ -35,6 +37,7 @@ export default Component.extend(DropdownMixin, {
             if (event.animationName === 'fade-out' && this.closing) {
                 this.set('isOpen', false);
                 this.set('closing', false);
+                this.onClose?.();
             }
         });
 
@@ -59,7 +62,6 @@ export default Component.extend(DropdownMixin, {
 
     close() {
         this.set('closing', true);
-
         if (this.button) {
             this.set('button.isOpen', false);
         }

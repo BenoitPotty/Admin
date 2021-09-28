@@ -3,6 +3,7 @@
         <h2 class="gh-canvas-title" data-test-screen-title>Members</h2>
         <section class="view-actions">
             <div class="view-actions-bottom-row">
+                {{#unless (feature "membersFiltering")}}
                 <GhMembersFilter
                     @selectedLabel={{this.selectedLabel}}
                     @availableLabels={{this.availableLabels}}
@@ -16,6 +17,7 @@
                     @selectedOrder={{this.selectedOrder}}
                     @onOrderChange={{this.changeOrder}}
                 />
+                {{/unless}}
                 <div class="relative gh-members-header-search">
                     {{svg-jar "search" class="gh-input-search-icon"}}
                     <GhTextInput
@@ -27,10 +29,21 @@
             </div>
 
             <div class="view-actions-top-row">
+                {{#if (feature "membersFiltering")}}
+                <GhMembersFilterLabs
+                    @isFiltered={{this.isFiltered}}
+                    @onApplyFilter={{this.applyFilter}}
+                    @defaultFilterParam={{this.filterParam}}
+                    @onApplySoftFilter={{this.applySoftFilter}}
+                    @onResetSoftFilter={{this.resetSoftFilter}}
+                    @onResetFilter={{this.resetFilter}}
+                    @onLabelEdit={{this.editLabel}}
+                />
+                {{/if}}
                 <span class="dropdown">
                     <GhDropdownButton
                         @dropdownName="members-actions-menu"
-                        @classNames="gh-btn gh-btn-icon only-has-icon gh-actions-cog"
+                        @classNames="gh-btn gh-btn-icon icon-only gh-btn-action-icon"
                         @title="Members Actions"
                         data-test-button="members-actions"
                     >
@@ -65,6 +78,25 @@
                             {{/if}}
                         </li>
                         {{#if (and this.members.length this.isFiltered)}}
+                            <li class="divider"></li>
+                            {{#if (feature "membersFiltering")}}
+                                <li>
+                                    <button class="mr2" {{on "click" this.toggleAddMembersLabelModal}} data-test-button="add-label-selected">
+                                        <span>Add label for selected members ({{this.members.length}})</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="mr2" {{on "click" this.toggleRemoveMembersLabelModal}} data-test-button="remove-label-selected">
+                                        <span>Remove label from selected members ({{this.members.length}})</span>
+                                    </button>
+                                </li>
+                                <li>
+                                    <button class="mr2" {{on "click" this.toggleUnsubscribeMembersModal}} data-test-button="remove-label-selected">
+                                        <span>Unsubscribe selected members ({{this.members.length}})</span>
+                                    </button>
+                                </li>
+                            {{/if}}
+                            <li class="divider"></li>
                             <li>
                                 <button class="mr2" {{on "click" this.toggleDeleteMembersModal}} data-test-button="delete-selected">
                                     <span class="red">Delete selected members ({{this.members.length}})</span>
@@ -80,6 +112,47 @@
 
     {{#unless this.members.loading}}
         <section class="view-container">
+            {{#if (feature "membersFiltering")}}
+                {{#if this.members}}
+                <div class="gh-list-scrolling">
+                    <table class="gh-list">
+                        <thead>
+                            <tr>
+                                <th>{{this.listHeader}}</th>
+                                <th>Open rate</th>
+                                <th>Location</th>
+                                <th>Created</th>
+                                {{#each this.filterColumnLabels as |filterColumn|}}
+                                    <th>{{filterColumn}}</th>
+                                {{/each}}
+                            </tr>
+                        </thead>
+                        <VerticalCollection @tagName="tbody" @items={{this.members}} @key="id" @containerSelector=".gh-list-scrolling" @estimateHeight={{69}} @staticHeight={{true}} @bufferSize={{20}} as |member|>
+                            <GhMembersListItemLabs
+                                @member={{member}}
+                                @filterColumns={{this.filterColumns}}
+                                data-test-member={{member.id}}
+                            />
+                        </VerticalCollection>
+                    </table>
+                </div>
+                {{else}}
+                <div class="no-posts-box">
+                    <div class="no-posts">
+                    {{svg-jar "members-placeholder" class="gh-members-placeholder"}}
+                    {{#if this.showingAll}}
+                        <h3>No members yet</h3>
+                        <GhMembersNoMembers @afterCreate={{this.refreshData}} />
+                    {{else}}
+                        <h3>No members match the current filter</h3>
+                        <LinkTo @route="members" @query={{hash filter=null}} class="gh-btn gh-btn-lg">
+                            <span>Show all members</span>
+                        </LinkTo>
+                    {{/if}}
+                    </div>
+                </div>
+                {{/if}}
+            {{else}}
             <section class="content-list">
                 <ol class="members-list gh-list {{unless this.members "no-posts"}}">
                     {{#if this.members}}
@@ -107,12 +180,16 @@
                                     <GhMembersNoMembers @afterCreate={{this.refreshData}} />
                                 {{else}}
                                     <h3>No members match the current filter</h3>
+                                    <LinkTo @route="members" @query={{hash label=null paid=null search=null}} class="gh-btn gh-btn-lg">
+                                        <span>Show all members</span>
+                                    </LinkTo>
                                 {{/if}}
                             </div>
                         </li>
                     {{/if}}
                 </ol>
             </section>
+            {{/if}}
         </section>
     {{else}}
         <div class="gh-content">
@@ -122,6 +199,36 @@
 </section>
 
 {{outlet}}
+
+{{#if this.showAddMembersLabelModal}}
+    <GhFullscreenModal
+        @modal="add-label-members"
+        @model={{hash memberCount=this.members.length}}
+        @confirm={{this.addLabelToMembers}}
+        @close={{this.toggleAddMembersLabelModal}}
+        @modifier="action wide"
+    />
+{{/if}}
+
+{{#if this.showRemoveMembersLabelModal}}
+    <GhFullscreenModal
+        @modal="remove-label-members"
+        @model={{hash memberCount=this.members.length}}
+        @confirm={{this.removeLabelFromMembers}}
+        @close={{this.toggleRemoveMembersLabelModal}}
+        @modifier="action wide"
+    />
+{{/if}}
+
+{{#if this.showUnsubscribeMembersModal}}
+    <GhFullscreenModal
+        @modal="unsubscribe-members"
+        @model={{hash memberCount=this.members.length}}
+        @confirm={{this.unsubscribeMembers}}
+        @close={{this.toggleUnsubscribeMembersModal}}
+        @modifier="action wide"
+    />
+{{/if}}
 
 {{#if this.showDeleteMembersModal}}
     <GhFullscreenModal

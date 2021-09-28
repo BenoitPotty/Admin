@@ -22,10 +22,10 @@ export default Component.extend({
 
     init() {
         this._super(...arguments);
-        this.availableVisibilities = VISIBILITIES;
+        this.availableVisibilities = [...VISIBILITIES];
         if (this.feature.get('multipleProducts')) {
             this.availableVisibilities.push(
-                {label: 'A segment', name: 'filter'}
+                {label: 'Specific tier(s)', name: 'filter'}
             );
         }
     },

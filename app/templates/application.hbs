@@ -22,9 +22,7 @@
         <GhContentCover />
 
         <GhMobileNavBar />
-
-        <GhWhatsNew />
-    </div>{{!gh-viewport}}
+    </div>
 
     {{#if this.customViews.showFormModal}}
         <GhFullscreenModal
@@ -36,14 +34,31 @@
 
     {{#if this.settings.accentColor}}
         <style>
+            :root {
+                --accent-color: {{this.settings.accentColor}};
+                --adjusted-accent-color: {{this.ui.adjustedAccentColor}};
+                --text-color-for-adjusted-accent-background: {{this.ui.textColorForAdjustedAccentBackground}};
+            }
             .koenig-editor__editor a:not([class]) {
-                color: {{this.adjustedAccentColor}};
+                color: var(--adjusted-accent-color);
             }
             .koenig-editor__editor blockquote {
-                border-left: 0.25rem solid {{this.adjustedAccentColor}};
+                border-left: 0.25rem solid var(--adjusted-accent-color);
             }
+
+            .gh-btn-accent {
+                color: var(--text-color-for-adjusted-accent-background);
+                background-color: var(--adjusted-accent-color)
+            }
+
+            .gh-btn-accent:hover {
+                color: {{hex-contrast this.ui.adjustedAccentColor}};
+                background-color: {{hex-adjust this.ui.adjustedAccentColor l=-15}}
+            }
+
         </style>
     {{/if}}
 </GhApp>
 
+<EpmModalContainer />
 <EmberLoadRemover />

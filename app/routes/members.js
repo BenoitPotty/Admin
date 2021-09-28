@@ -3,12 +3,14 @@ import {inject as service} from '@ember/service';
 
 export default class MembersRoute extends AuthenticatedRoute {
     @service store;
+    @service feature;
 
     queryParams = {
         label: {refreshModel: true},
         searchParam: {refreshModel: true, replace: true},
         paidParam: {refreshModel: true},
-        orderParam: {refreshModel: true}
+        orderParam: {refreshModel: true},
+        filterParam: {refreshModel: true}
     };
 
     // redirect to posts screen if:
@@ -22,6 +24,7 @@ export default class MembersRoute extends AuthenticatedRoute {
     }
 
     model(params) {
+        this.controllerFor('members').resetFilters(params);
         return this.controllerFor('members').fetchMembersTask.perform(params);
     }
 
@@ -32,8 +35,16 @@ export default class MembersRoute extends AuthenticatedRoute {
     }
 
     buildRouteInfoMetadata() {
-        return {
-            titleToken: 'Members'
-        };
+        if (this.feature.membersFiltering) {
+            return {
+                titleToken: 'Members',
+                mainClasses: ['gh-main-fullwidth']
+
+            };
+        } else {
+            return {
+                titleToken: 'Members'
+            };
+        }
     }
 }

@@ -1,3 +1,6 @@
+{{#if (eq this.displayState "sent")}}
+<div class="gh-btn gh-btn-text green">Sent</div>
+{{else}}
 <GhBasicDropdown @verticalPosition="below" @horizontalPosition="right" @onOpen={{action "open"}} @onClose={{action "close"}} as |dd|>
     <dd.Trigger class="gh-btn gh-btn-editor {{if (or (eq this.displayState "published") (eq this.displayState "scheduled") (eq this.uiContext "preview")) "green"}} gh-publishmenu-trigger">
         <span data-test-publishmenu-trigger>{{this.triggerText}} {{svg-jar "arrow-down"}}</span>
@@ -35,6 +38,7 @@
                 @setSendEmailWhenPublished={{action "setSendEmailWhenPublished"}}
                 @isSendingEmailLimited={{this.isSendingEmailLimited}}
                 @sendingEmailLimitError={{this.sendingEmailLimitError}}
+                @setDistributionAction={{action "setDistributionAction"}}
                 data-test-publishmenu-draft="true" />
         {{/if}}
 
@@ -58,6 +62,7 @@
         </footer>
     </dd.Content>
 </GhBasicDropdown>
+{{/if}}
 
 {{#if this.showEmailConfirmationModal}}
     <GhFullscreenModal
@@ -65,6 +70,7 @@
         @model={{hash
             sendEmailWhenPublished=this.sendEmailWhenPublished
             isScheduled=(eq this.saveType "schedule")
+            emailOnly=this.post.emailOnly
             retryEmailSend=this.retryEmailSend
         }}
         @confirm={{this.confirmEmailSend}}

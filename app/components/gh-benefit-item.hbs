@@ -5,7 +5,8 @@
     </span>
 {{/unless}}
 
-<div class="gh-blognav-line">
+<div class="gh-blognav-line {{unless this.name "placeholder"}}">
+    {{svg-jar "check-2"}}
     <GhValidationStatusContainer
         @tagName="span"
         @class="gh-blognav-label"
@@ -15,10 +16,11 @@
     >
         <GhTrimFocusInput
             @shouldFocus={{this.benefitItem.last}}
-            @placeholder="Add benefit"
+            @placeholder="Expert analysis"
             @value={{readonly this.name}}
             @input={{action "updateLabel" value="target.value"}}
             @keyPress={{action "clearLabelErrors"}}
+            @stopEnterKeyDownPropagation={{true}}
             @focus-out={{action "updateLabel" this.name}} data-test-input="name" />
         <GhErrorMessage
             @errors={{this.benefitItem.errors}}

@@ -1,4 +1,10 @@
 import Service, {inject as service} from '@ember/service';
+import {
+    Color,
+    darkenToContrastThreshold,
+    lightenToContrastThreshold,
+    textColorForBackgroundColor
+} from '@tryghost/color-utils';
 import {action} from '@ember/object';
 import {get} from '@ember/object';
 import {isEmpty} from '@ember/utils';
@@ -37,8 +43,10 @@ function updateBodyClasses(transition) {
 export default class UiService extends Service {
     @service config;
     @service dropdown;
+    @service feature;
     @service mediaQueries;
     @service router;
+    @service settings;
 
     @tracked isFullScreen = false;
     @tracked mainClass = '';
@@ -54,6 +62,38 @@ export default class UiService extends Service {
 
     get hasSideNav() {
         return !this.isSideNavHidden;
+    }
+
+    get backgroundColor() {
+        // hardcoded background colors because
+        // grabbing color from .gh-main with getComputedStyle always returns #ffffff
+        return this.feature.nightShift ? '#151719' : '#ffffff';
+    }
+
+    get adjustedAccentColor() {
+        const accentColor = Color(this.settings.get('accentColor'));
+        const backgroundColor = Color(this.backgroundColor);
+
+        // WCAG contrast. 1 = lowest contrast, 21 = highest contrast
+        const accentContrast = accentColor.contrast(backgroundColor);
+
+        if (accentContrast > 2) {
+            return accentColor.hex();
+        }
+
+        let adjustedAccentColor = accentColor;
+
+        if (this.feature.nightShift) {
+            adjustedAccentColor = lightenToContrastThreshold(accentColor, backgroundColor, 2);
+        } else {
+            adjustedAccentColor = darkenToContrastThreshold(accentColor, backgroundColor, 2);
+        }
+
+        return adjustedAccentColor.hex();
+    }
+
+    get textColorForAdjustedAccentBackground() {
+        return textColorForBackgroundColor(this.adjustedAccentColor).hex();
     }
 
     constructor() {
@@ -116,5 +156,49 @@ export default class UiService extends Service {
         } else {
             window.document.title = blogTitle;
         }
+    }
+
+    @action
+    initBodyDragHandlers() {
+        // when any drag event is occurring we add `data-user-is-dragging` to the
+        // body element so that we can have dropzones start listening to pointer
+        // events allowing us to have interactive elements "underneath" drop zones
+        this.bodyDragEnterHandler = (event) => {
+            if (!event.dataTransfer) {
+                return;
+            }
+
+            document.body.dataset.userIsDragging = true;
+            window.clearTimeout(this.dragTimer);
+        };
+
+        this.bodyDragLeaveHandler = (event) => {
+            // only remove document-level "user is dragging" indicator when leaving the document
+            if (event.screenX !== 0 || event.screenY !== 0) {
+                return;
+            }
+
+            window.clearTimeout(this.dragTimer);
+            this.dragTimer = window.setTimeout(() => {
+                delete document.body.dataset.userIsDragging;
+            }, 50);
+        };
+
+        this.cancelDrag = () => {
+            delete document.body.dataset.userIsDragging;
+        };
+
+        document.body.addEventListener('dragenter', this.bodyDragEnterHandler, {capture: true});
+        document.body.addEventListener('dragleave', this.bodyDragLeaveHandler, {capture: true});
+        document.body.addEventListener('dragend', this.cancelDrag, {capture: true});
+        document.body.addEventListener('drop', this.cancelDrag, {capture: true});
+    }
+
+    @action
+    cleanupBodyDragHandlers() {
+        document.body.removeEventListener('dragenter', this.bodyDragEnterHandler, {capture: true});
+        document.body.removeEventListener('dragleave', this.bodyDragLeaveHandler, {capture: true});
+        document.body.removeEventListener('dragend', this.cancelDrag, {capture: true});
+        document.body.removeEventListener('drop', this.cancelDrag, {capture: true});
     }
 }

@@ -1,0 +1,144 @@
+<KoenigCard
+    @icon={{"koenig/card-indicator-email"}}
+    @class={{concat (kg-style "container-card") " kg-email-card kg-email-cta-card mih10 miw-100 relative"}}
+    @style={{@cardStyle}}
+    @headerOffset={{@headerOffset}}
+    @toolbar={{this.toolbar}}
+    @payload={{@payload}}
+    @isSelected={{@isSelected}}
+    @isEditing={{@isEditing}}
+    @selectCard={{@selectCard}}
+    @deselectCard={{@deselectCard}}
+    @editCard={{@editCard}}
+    @saveCard={{@saveCard}}
+    @saveAsSnippet={{@saveAsSnippet}}
+    @onLeaveEdit={{this.leaveEditMode}}
+    @addParagraphAfterCard={{@addParagraphAfterCard}}
+    @moveCursorToPrevSection={{@moveCursorToPrevSection}}
+    @moveCursorToNextSection={{@moveCursorToNextSection}}
+    @editor={{@editor}}
+    {{did-insert this.registerElement}}
+    as |card|
+>
+    {{#if @isEditing}}
+        <div class="kg-card-help">
+            <p>
+                <span>
+                    Only visible to
+                    <PowerSelect
+                        @options={{this.segments}}
+                        @selected={{this.selectedSegment}}
+                        @onChange={{this.setSegment}}
+                        @searchEnabled={{false}}
+                        @triggerComponent="gh-power-select/trigger"
+                        @triggerClass="ember-power-select-inline"
+                        @dropdownClass="gh-member-segment-select-dropdown"
+                        as |segment|
+                    >
+                        {{segment.name}}
+                    </PowerSelect>
+                    when delivered by email.
+                    This card will not be published on your site.
+                </span>
+            </p>
+        </div>
+
+        {{#if @payload.showDividers}}<hr class="border-top edit-mode">{{/if}}
+
+        <div class="{{if (eq @payload.alignment "center") "tc"}}">
+            <KoenigTextReplacementHtmlInput
+                @html={{@payload.html}}
+                @placeholder="Email only text... (optional)"
+                @autofocus={{true}}
+                @class="miw-100 bn bg-transparent"
+                @onChange={{this.updateHtml}}
+                @onFocus={{fn (mut this.contentFocused) true}}
+                @onBlur={{fn (mut this.contentFocused) false}}
+                @didCreateEditor={{this.registerEditor}}
+            />
+
+            {{#if @payload.showButton}}
+                <button type="button" class="gh-btn gh-btn-accent" disabled={{not @payload.buttonText}}>
+                    {{#if @payload.buttonText}}
+                        <span>{{@payload.buttonText}}</span>
+                    {{else}}
+                        <span>Add button text</span>
+                    {{/if}}
+                </button>
+            {{/if}}
+        </div>
+
+        {{#if @payload.showDividers}}<hr class="border-bottom">{{/if}}
+
+        <form class="email-cta-toolbar">
+            <div class="borders">
+                <button type="button" title="Add dividers" class="gh-btn gh-btn-white gh-btn-icon email-cta-toolbar-item {{if @payload.showDividers "fill-green-d1"}}" {{on "click" this.toggleDividers}}><span>{{svg-jar "dividers"}}</span></button>
+            </div>
+
+            <div class="gh-btn-group icons email-cta-align">
+                <button type="button" title="Left-align content" class="gh-btn gh-btn-icon {{if (eq @payload.alignment "left") "gh-btn-group-selected"}}" {{on "click" (fn this.setAlignment "left")}}><span>{{svg-jar "align-left"}}</span></button>
+                <button type="button" title="Center-align content" class="gh-btn gh-btn-icon {{if (eq @payload.alignment "center") "gh-btn-group-selected"}}" {{on "click" (fn this.setAlignment "center")}}><span>{{svg-jar "align-center"}}</span></button>
+            </div>
+
+            <button type="button" title="Add button" class="gh-btn gh-btn-white gh-btn-icon email-cta-toolbar-item {{if @payload.showButton "fill-green-d1"}}" {{on "click" this.toggleButton}}><span>{{svg-jar "button"}}</span></button>
+
+            {{#if @payload.showButton}}
+                <label for={{this.buttonTextInputId}} class="sr-only">CTA button text</label>
+                <input
+                    type="text"
+                    class="gh-input email-cta-button-text-input"
+                    id={{this.buttonTextInputId}}
+                    name="button-text"
+                    value={{@payload.buttonText}}
+                    placeholder="Add button text"
+                    {{on "input" this.setButtonText}}
+                    {{on-key "Enter" (fn this.focusElement "#button-url-input")}}
+                >
+
+                <label for={{this.urlInputId}} class="sr-only">CTA URL</label>
+                <GhInputWithSelect
+                    @value={{@payload.buttonUrl}}
+                    @options={{this.suggestedUrls}}
+                    @valueField="url"
+                    @searchField="url"
+                    @placeholder="https://yoursite.com/#/portal/signup/"
+                    @searchMessage={{null}}
+                    @onInput={{this.setButtonUrl}}
+                    @openOnFocus={{true}}
+                    @closeWhenEmpty={{true}}
+                    @triggerClass="email-cta-button-url-input"
+                    @triggerId={{this.urlInputId}}
+                    @renderInPlace={{false}} {{!-- avoid dropdown inheriting editor styles --}}
+                    as |suggestion|
+                >
+                    <span class="db b">{{suggestion.name}}</span>
+                    {{suggestion.url}}
+                </GhInputWithSelect>
+            {{/if}}
+        </form>
+    {{else}}
+        <div class="gh-email-cta-segment-indicator">
+            <p>{{capitalize this.selectedSegment.name}}</p>
+        </div>
+
+        {{#if @payload.showDividers}}<hr class="border-top">{{/if}}
+
+        <div class="{{if (not @payload.showDividers) "pb2"}} {{if (eq @payload.alignment "center") "tc"}}">
+            {{#if @payload.html}}
+                <div class="relative">
+                    <p>{{{this.formattedHtml}}}</p>
+                    <div class="koenig-card-click-overlay"></div>
+                </div>
+            {{/if}}
+
+            {{#if (and @payload.showButton @payload.buttonText @payload.buttonUrl)}}
+                <a class="gh-btn gh-btn-accent" href="javascript:void(0)" data-tooltip={{@payload.buttonUrl}}><span>{{@payload.buttonText}}</span></a>
+            {{/if}}
+        </div>
+
+        {{#if @payload.showDividers}}<hr class="border-bottom">{{/if}}
+
+    {{/if}}
+
+
+</KoenigCard>

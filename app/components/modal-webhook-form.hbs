@@ -16,7 +16,6 @@
                 @id="webhook-name"
                 @name="name"
                 @class="gh-input mt1"
-                @placeholder="Webhook name..."
                 @shouldFocus={{true}}
                 @autocapitalize="off"
                 @autocorrect="off"
@@ -55,8 +54,8 @@
                 @focus-out={{action "validate" "targetUrl" target=this.webhook}}
                 @id="webhook-targetUrl"
                 @name="targetUrl"
+                @placeholder="https://example.com"
                 @class="gh-input mt1"
-                @placeholder="Webhook target URL..."
                 @shouldFocus={{true}}
                 @autocapitalize="off"
                 @autocorrect="off"
@@ -75,7 +74,6 @@
                     @id="webhook-secret"
                     @name="secret"
                     @class="gh-input mt1"
-                    @placeholder="Webhook secret..."
                     @shouldFocus={{true}}
                     @autocapitalize="off"
                     @autocorrect="off"

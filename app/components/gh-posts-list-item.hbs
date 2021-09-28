@@ -15,7 +15,7 @@
                     in <span class="midgrey-l2 fw5">{{@post.primaryTag.name}}</span>
                 {{/if}}
 
-                 • {{gh-format-post-time @post.updatedAtUTC draft=true}}
+                 • <span data-tooltip="{{gh-format-post-time @post.updatedAtUTC "D MMM YYYY"}}">{{gh-format-post-time @post.updatedAtUTC draft=true}}</span>
 
             </span>
         </p>
@@ -54,8 +54,11 @@
     <LinkTo @route="editor.edit" @models={{array @post.displayName @post.id}} class="permalink gh-list-data gh-post-list-status">
         <div class="flex items-center">
             {{#if @post.isScheduled}}
-            <span class="gh-content-status-draft gh-badge nowrap" title="Scheduled" data-tooltip="{{capitalize this.scheduledText}} to {{@post.emailRecipientFilter}} members">
+            <span class="gh-content-status-scheduled gh-badge nowrap" title="Scheduled" data-tooltip="{{capitalize this.scheduledText}} to {{@post.emailRecipientFilter}} members">
                 Scheduled
+                {{#if @post.emailRecipientFilter}}
+                {{svg-jar "email-stroke"}}
+                {{/if}}
             </span>
             {{/if}}
 
@@ -68,6 +71,15 @@
             {{#if @post.isPublished}}
             <span class="gh-content-status-published nowrap">
                 Published
+                {{#if @post.hasEmail}}
+                {{svg-jar "email-stroke"}}
+                {{/if}}
+            </span>
+            {{/if}}
+
+            {{#if @post.isSent}}
+            <span class="gh-content-status-emailed nowrap">
+                {{svg-jar "email-stroke"}}
             </span>
             {{/if}}
         </div>

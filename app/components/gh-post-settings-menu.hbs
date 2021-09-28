@@ -14,7 +14,7 @@
                     <label for="url">{{capitalize this.post.displayName}} URL</label>
                     {{!-- new posts don't have a preview link --}}
                     {{#unless this.post.isNew}}
-                        {{#if this.post.isPublished}}
+                        {{#if (or this.post.isPublished this.post.isSent)}}
                         <a class="post-view-link" target="_blank" href="{{this.post.url}}">
                             View {{this.post.displayName}} {{svg-jar "external"}}
                         </a>
@@ -36,7 +36,11 @@
                             @focus-out={{action "updateSlug" this.slugValue}}
                             @stopEnterKeyDownPropagation={{true}} />
                     </div>
-                    <GhUrlPreview @slug={{this.slugValue}} @tagName="p" @classNames="description" />
+                    {{#if this.post.isSent}}
+                        <GhUrlPreview @prefix="email" @slug={{this.uuidValue}} @tagName="p" @classNames="description" />
+                    {{else}}
+                        <GhUrlPreview @slug={{this.slugValue}} @tagName="p" @classNames="description" />
+                    {{/if}}
                 </div>
 
                 <div class="form-group">
@@ -69,11 +73,10 @@
                 </div>
                 {{/unless}}
 
-
                 {{#if this.showVisibilityInput}}
                     {{#if (feature "multipleProducts")}}
                         <GhFormGroup @errors={{this.post.errors}} @hasValidated={{this.post.hasValidated}} @property="visibility">
-                            <label for="visibility-input">Post access</label>
+                            <label for="visibility-input">{{capitalize @post.displayName}} access</label>
                             <GhPsmVisibilityInput @post={{this.post}} @triggerId="visibility-input" />
                         </GhFormGroup>
 

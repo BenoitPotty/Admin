@@ -53,9 +53,13 @@ export default Service.extend({
     nightShift: feature('nightShift', {user: true, onChange: '_setAdminTheme'}),
     launchComplete: feature('launchComplete', {user: true}),
     matchHelper: feature('matchHelper'),
-    multipleProducts: feature('multipleProducts', {developer: true}),
-    emailCardSegments: feature('emailCardSegments', {developer: true}),
-    savedIndicator: feature('savedIndicator', {developer: true}),
+    multipleProducts: feature('multipleProducts'),
+    membersFiltering: feature('membersFiltering', {developer: true}),
+    offers: feature('offers', {developer: true}),
+    oauthLogin: feature('oauthLogin', {developer: true}),
+    emailOnlyPosts: feature('emailOnlyPosts', {developer: true}),
+    customThemeSettings: feature('customThemeSettings', {developer: true}),
+    membersActivity: feature('membersActivity', {developer: true}),
 
     _user: null,
 

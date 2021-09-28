@@ -8,11 +8,11 @@ import {
     isRequestEntityTooLargeError,
     isUnsupportedMediaTypeError
 } from 'ghost-admin/services/ajax';
-import {computed, set} from '@ember/object';
 import {isBlank} from '@ember/utils';
 import {isArray as isEmberArray} from '@ember/array';
 import {run} from '@ember/runloop';
 import {inject as service} from '@ember/service';
+import {set} from '@ember/object';
 import {task, timeout} from 'ember-concurrency';
 
 const {Promise} = RSVP;
@@ -46,6 +46,8 @@ export default Controller.extend({
     importErrors: null,
     importSuccessful: false,
     showDeleteAllModal: false,
+    showEarlyAccessModal: false,
+    showEnableTiersModal: false,
     submitting: false,
     uploadButtonText: 'Import',
 
@@ -71,10 +73,6 @@ export default Controller.extend({
         // so explicitly allow the `yaml` extension.
         this.yamlAccept = [...this.yamlMimeType, ...Array.from(this.yamlExtension, extension => '.' + extension)];
     },
-
-    isOAuthEnabled: computed('settings.{oauthClientId,oauthClientSecret}', 'isOAuthConfigurationOpen', function () {
-        return (this.settings.get('oauthClientId') && this.settings.get('oauthClientSecret')) || this.isOAuthConfigurationOpen;
-    }),
 
     actions: {
         onUpload(file) {
@@ -158,6 +156,14 @@ export default Controller.extend({
 
         toggleDeleteAllModal() {
             this.toggleProperty('showDeleteAllModal');
+        },
+
+        toggleEarlyAccessModal() {
+            this.toggleProperty('showEarlyAccessModal');
+        },
+
+        toggleEnableTiersModal() {
+            this.toggleProperty('showEnableTiersModal');
         },
 
         async toggleIsOAuthEnabled() {

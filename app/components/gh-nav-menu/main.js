@@ -56,6 +56,7 @@ export default Component.extend(ShortcutsMixin, {
     // style directly. However we still need to keep track of changing icons
     // so that we can refresh when a new icon is uploaded
     didReceiveAttrs() {
+        this._super(...arguments);
         this._setIconStyle();
         this._loadMemberCountsTask.perform();
     },
@@ -112,6 +113,7 @@ export default Component.extend(ShortcutsMixin, {
         this._icon = icon;
 
         if (icon && icon.match(/^https?:\/\//i)) {
+            this.set('iconClass', '');
             this.set('iconStyle', htmlSafe(`background-image: url(${icon})`));
             return;
         }
