@@ -107,6 +107,7 @@ export default Model.extend(Comparable, ValidationEngine, {
     url: attr('string'),
     uuid: attr('string'),
     emailRecipientFilter: attr('members-segment-string', {defaultValue: null}),
+    emailOnly: attr('boolean', {defaultValue: false}),
 
     featureImage: attr('string'),
     featureImageAlt: attr('string'),
@@ -152,10 +153,14 @@ export default Model.extend(Comparable, ValidationEngine, {
     isDraft: equal('status', 'draft'),
     internalTags: filterBy('tags', 'isInternal', true),
     isScheduled: equal('status', 'scheduled'),
+    isSent: equal('status', 'sent'),
 
     isPost: equal('displayName', 'post'),
     isPage: equal('displayName', 'page'),
 
+    hasEmail: computed('email', 'emailOnly', function () {
+        return this.email !== null || this.emailOnly;
+    }),
     willEmail: computed('emailRecipientFilter', function () {
         return this.emailRecipientFilter !== null;
     }),

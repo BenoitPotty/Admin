@@ -21,7 +21,7 @@
 
         <div class="gh-setting-members-basics">
             <div class="gh-setting-members-basicsform">
-                <p class="intro">Fund your work with subscription revenue. Connect your Stripe account and offer premium content to your audience. Our creators are already making over $2 million per year, while Ghost takes 0% payment fees.</p>
+                <p class="intro">Fund your work with subscription revenue. Connect your Stripe account and offer premium content to your audience. Our creators are already making over $5 million per year, while <strong>Ghost takes 0% payment fees</strong>.</p>
                 <hr>
                 <div>
                     <section class="gh-expandable gh-setting-members-portalcta">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="gh-setting-members-portalpreview">
-                <div class="gh-setting-members-portal-mock">
+                <div class="gh-setting-members-portal-mock {{if (feature "multipleProducts") "mock-enabled"}}">
                     {{#if (or (eq this.settings.membersSignupAccess 'none') this.switchFromNoneTask.isRunning)}}
                         <div class="gh-setting-members-portal-disabled">
                             <span class="lightgrey">{{svg-jar "portal-logo-stroke"}}</span>
@@ -69,11 +69,13 @@
         <div class="gh-setting-members-tierscontainer">
             <div class="gh-settings-members-tiersheader">
                 <h4 class="gh-main-section-header small bn">Membership tiers</h4>
+                {{#if this.session.user.isAdmin}}
                 <button type="button" class="gh-btn gh-btn-outline gh-btn-stripe-status {{if this.isConnectDisallowed "disabled"}} {{if this.settings.stripeConnectAccountId "connected" ""}}" {{on "click" this.openStripeConnect}}>
                     <span>
                         {{if this.settings.stripeConnectAccountId "Connected to Stripe" "Stripe not connected"}}
                     </span>
                 </button>
+                {{/if}}
             </div>
             <section class="gh-expandable">
                 <div class="gh-expandable-block">
@@ -119,7 +121,7 @@
                         {{#if this.settings.stripeConnectAccountId}}
                             <button type="button" class="gh-btn" {{on "click" (toggle "paidOpen" this)}} data-test-toggle-pub-info><span>{{if this.paidOpen "Close" "Expand"}}</span></button>
                         {{else}}
-                            <button type="button" class="stripe-connect {{if this.isConnectDisallowed "disabled"}}" {{on "click" this.openStripeConnect}}>
+                            <button type="button" class="stripe-connect {{if (or (not this.session.user.isAdmin) this.isConnectDisallowed) "disabled"}}" {{on "click" this.openStripeConnect}}>
                                 <span>Connect with Stripe</span>
                             </button>
                         {{/if}}
@@ -218,6 +220,78 @@
                         {{/liquid-if}}
                     </div>
                 </div>
+                {{#if (feature "offers")}}
+                    {{#if this.settings.stripeConnectAccountId}}
+                    <div class="gh-expandable-block">
+                        <div class="gh-expandable-header">
+                            <div>
+                                <h4 class="gh-expandable-title">Offers</h4>
+                                <p class="gh-expandable-description">Manage targeted discounts</p>
+                            </div>
+                            <button type="button" class="gh-btn" {{action (toggle "offersOpen" this)}}><span>{{if this.offersOpen "Close" "Expand"}}</span></button>
+                        </div>
+                        <div class="gh-expandable-content">
+                            {{#liquid-if this.offersOpen}}
+                            <div class="gh-setting-content-extended">
+                                {{#if this.offersExist}}
+                                <div class="gh-main-content-card gh-offers-list">
+                                    <table class="gh-list tabbed">
+                                        <thead>
+                                            <tr>
+                                                <th class="gh-list-header">Name</th>
+                                                <th class="gh-list-header">Product</th>
+                                                <th class="gh-list-header">Terms</th>
+                                                <th class="gh-list-header">Redemptions</th>
+                                                <th class="gh-list-header"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="gh-list-data fw5">Black Friday</td>
+                                                <td class="gh-list-data middarkgrey">Bronze - Monthly</td>
+                                                <td class="gh-list-data middarkgrey">50%</td>
+                                                <td class="gh-list-data middarkgrey">65</td>
+                                                <td class="gh-list-data lightgrey">Actions</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="gh-list-data fw5">Intro to Gold</td>
+                                                <td class="gh-list-data middarkgrey">Gold - Yearly</td>
+                                                <td class="gh-list-data middarkgrey">$299</td>
+                                                <td class="gh-list-data middarkgrey">3</td>
+                                                <td class="gh-list-data lightgrey">Actions</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="gh-offers-list-footer">
+                                        <div>
+                                            <LinkTo @route="settings.membership.offer" class="gh-btn gh-btn-text gh-btn-icon green">
+                                                <span>{{svg-jar "add-stroke"}} Add offer</span>
+                                            </LinkTo>
+                                        </div>
+                                        <div>
+                                            <span class="lightgrey f8">&larr; Prev 1 2 3 Next &rarr;</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                {{else}}
+                                <div class="gh-main-content-card gh-offers gh-offers-list-cta">
+                                    {{svg-jar "discount-bubble" class="discount-bubble"}}
+                                    <h4>Provide special offers to new signups</h4>
+                                    <p>
+                                        Boost your subscriptions by creating targeted discounts to potential members. 
+                                        <a href="https://ghost.org/help/" target="_blank">Learn more</a>
+                                    </p>
+                                    <LinkTo @route="settings.membership.offer" class="gh-btn gh-btn-green gh-btn-icon">
+                                        <span>{{svg-jar "add"}} Add offer</span>
+                                    </LinkTo>
+                                </div>
+                                {{/if}}
+                            </div>
+                            {{/liquid-if}}
+                        </div>
+                    </div>
+                    {{/if}}
+                {{/if}}
             </section>
         </div>
     </section>

@@ -68,35 +68,13 @@
 
 .members-list .gh-list-header {
     position: sticky;
-    top: 84px;
+    top: 96px;
     z-index: 1;
     background: var(--white);
 }
 
-.members-list-header-overlay {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    position: sticky;
-    height: 40px;
-    top: calc(84px - 40px); /* match gh-list-header sticky top */
-    left: 0;
-    right: 0;
-    margin-top: -40px;
-    transform: translateY(40px);
-    z-index: 2;
-
-    border-radius: 5px 5px 0 0;
-
-    border-bottom: 1px solid #e5eff5;
-    font-size: 1.2rem;
-    font-weight: 500;
-    letter-spacing: .1px;
-    color: #738a94;
-    text-transform: uppercase;
-    padding: 10px 16px;
-    white-space: nowrap;
-    background: #f8fafc;
+.gh-list-scrolling-h .members-list .gh-list-header {
+    top: 0;
 }
 
 .members-header .view-actions input.gh-members-list-searchfield {
@@ -151,6 +129,12 @@ p.gh-members-list-email {
     width: 220px;
     margin-right: -8px;
     padding-right: 0;
+}
+
+.gh-members-list-labels {
+    display: inline-block;
+    max-width: 300px;
+    min-width: 220px;
 }
 
 .gh-members-placeholder {
@@ -729,6 +713,58 @@ textarea.gh-member-details-textarea {
 .gh-member-cancelstripe-checkbox input:checked + .input-toggle-component {
     border-color: color-mod(var(--red) l(-5%));
     background: var(--red);
+}
+
+.gh-members-no-data {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 32px 0;
+}
+
+.gh-members-no-data svg {
+    width: 76px;
+    height: auto;
+    margin-bottom: 8px;
+}
+
+.gh-members-no-data svg path,
+.gh-members-no-data svg rect,
+.gh-members-no-data svg circle {
+    stroke-width: 0.8px;
+}
+
+.gh-members-no-data h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--middarkgrey);
+}
+
+.gh-members-no-data p {
+    font-size: 1.3rem;
+    line-height: 1.5em;
+    margin: 4px 44px 0;
+    color: var(--midgrey);
+}
+
+.gh-members-no-list h4 {
+    margin-top: 8px;
+}
+
+.gh-members-no-list svg path {
+    stroke-width: 1px;
+}
+
+.gh-members-no-subs svg {
+    width: 64px;
+    margin-left: 18px;
+}
+
+.gh-members-no-subs svg path,
+.gh-members-no-subs svg rect,
+.gh-members-no-subs svg circle {
+    stroke-width: 1px;
 }
 
 .gh-member-feed {
@@ -1823,4 +1859,27 @@ p.gh-members-import-errordetail:first-of-type {
 
 .gh-member-addcomp-warning {
     margin-top: -16px;
+}
+
+.gh-members-filter-builder {
+    width: 720px;
+    margin-top: 8px;
+}
+
+@media (max-width: 980px) {
+    .gh-members-filter-builder {
+        width: 640px;
+    }
+}
+
+@media (max-width: 890px) {
+    .gh-members-filter-builder {
+        margin-right: -180px;
+    }
+}
+
+@media (max-width: 690px) {
+    .gh-members-filter-builder {
+        width: calc(100% - 100px);
+    }
 }

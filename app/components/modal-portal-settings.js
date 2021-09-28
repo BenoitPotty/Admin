@@ -12,6 +12,8 @@ export default ModalComponent.extend({
     membersUtils: service(),
     settings: service(),
     store: service(),
+    session: service(),
+    feature: service(),
 
     page: 'signup',
     iconExtensions: null,
@@ -82,6 +84,10 @@ export default ModalComponent.extend({
             };
         });
         return products;
+    }),
+
+    showPortalTiers: computed('products', 'feature.multipleProducts', function () {
+        return this.get('products')?.length > 1 && this.feature.get('multipleProducts');
     }),
 
     init() {

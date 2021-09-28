@@ -82,6 +82,23 @@
         <div class="gh-main-section">
             <h4 class="gh-main-section-header small bn">Beta features</h4>
             <div class="gh-expandable">
+
+                <div class="gh-expandable-block">
+                    <div class="gh-expandable-header">
+                        <div>
+                            <h4 class="gh-expandable-title">Tiers</h4>
+                            <p class="gh-expandable-description">
+                                Add additional tiers to your paid memberships (e.g. Bronze, Silver, Gold). <a href="http://ghost.org/help/tiers" target="_blank">Learn more here</a>
+                            </p>
+                        </div>
+                        {{#if (feature "multipleProducts")}}
+                            <span class="gh-badge">Enabled</span>
+                        {{else}}
+                            <button type="button" class="gh-btn" {{action "toggleEnableTiersModal"}}><span>Enable</span></button>
+                        {{/if}}
+                    </div>
+                </div>
+
                 <div class="gh-expandable-block">
                     <GhUploader
                         @extensions={{this.redirectsFileExtensions}}
@@ -94,7 +111,7 @@
                     <div class="gh-expandable-header">
                         <div>
                             <h4 class="gh-expandable-title">Redirects</h4>
-                            <p class="gh-expandable-description">Configure redirects for old or moved content, more info in <a href="https://ghost.org/docs/tutorials/implementing-redirects/">the docs</a></p>
+                            <p class="gh-expandable-description">Configure redirects for old or moved content, more info in <a href="https://ghost.org/docs/tutorials/implementing-redirects/" target="_blank">the docs</a></p>
                         </div>
                         <div class="gh-setting-action flex flex-column items-end">
                             {{#if uploader.isUploading}}
@@ -193,25 +210,15 @@
                             <h4 class="gh-expandable-title">Google OAuth for staff users</h4>
                             <p class="gh-expandable-description">
                                 Allow people to sign into Ghost Admin using Google SSO,
-                                {{!-- TODO: create an help desk article and update the url here --}}
-                                <a href="#" target="_blank" rel="noopener">docs here</a>
+                                <a href="https://ghost.org/docs/tutorials/setting-up-oauth/" target="_blank" rel="noopener">docs here</a>
                             </p>
                         </div>
                         <div class="for-switch">
-                            <label class="switch" for="settings-oauth">
-                                <input
-                                    type="checkbox"
-                                    checked={{this.isOAuthEnabled}}
-                                    id="settings-oauth"
-                                    onclick={{action "toggleIsOAuthEnabled" value="target.checked"}}
-                                    data-test-private-checkbox
-                                >
-                                <span class="input-toggle-component"></span>
-                            </label>
+                            <GhFeatureFlag @flag="oauthLogin" />
                         </div>
                     </div>
                     <div class="gh-expandable-content">
-                        {{#if this.isOAuthEnabled}}
+                        {{#if this.feature.oauthLogin}}
                             <div class="gh-setting-content-extended gh-labs-sso-settings pt2 pb4">
                                 <a href="https://console.developers.google.com/" target="_blank" rel="noopener" class="gh-btn gh-btn-white mb4"><span>{{svg-jar "google-favicon"}}Configure Google OAuth</span></a>
                                 <GhFormGroup @class="no-margin pt2" @errors={{this.settings.errors}} @hasValidated={{this.settings.hasValidated}} @property="password">
@@ -257,39 +264,65 @@
                 <div class="gh-expandable-block">
                     <div class="gh-expandable-header">
                         <div>
-                            <h4 class="gh-expandable-title">Multiple products</h4>
+                            <h4 class="gh-expandable-title">Members Filtering</h4>
                             <p class="gh-expandable-description">
-                               Allow multiple products on site
+                               Allow using filtering features on Members
                             </p>
                         </div>
                         <div class="for-switch">
-                           <GhFeatureFlag @flag="multipleProducts" />
+                           <GhFeatureFlag @flag="membersFiltering" />
                         </div>
                     </div>
                 </div>
                 <div class="gh-expandable-block">
                     <div class="gh-expandable-header">
                         <div>
-                            <h4 class="gh-expandable-title">Gated content in emails</h4>
+                            <h4 class="gh-expandable-title">Email-only posts</h4>
                             <p class="gh-expandable-description">
-                                Experimental feature to gate email card only to free/paid members
+                               Enable posts visible only in email
                             </p>
                         </div>
                         <div class="for-switch">
-                           <GhFeatureFlag @flag="emailCardSegments" />
+                           <GhFeatureFlag @flag="emailOnlyPosts" />
                         </div>
                     </div>
                 </div>
                 <div class="gh-expandable-block">
                     <div class="gh-expandable-header">
                         <div>
-                            <h4 class="gh-expandable-title">Show saved state in editor</h4>
+                            <h4 class="gh-expandable-title">Custom theme settings</h4>
                             <p class="gh-expandable-description">
-                                Post status in editor shows "- Saved" when a post has no unsaved changes
+                               Redesign of "Design" settings in Admin and allow themes to specify custom settings.
                             </p>
                         </div>
                         <div class="for-switch">
-                           <GhFeatureFlag @flag="savedIndicator" />
+                           <GhFeatureFlag @flag="customThemeSettings" />
+                        </div>
+                    </div>
+                </div>
+                <div class="gh-expandable-block">
+                    <div class="gh-expandable-header">
+                        <div>
+                            <h4 class="gh-expandable-title">Members Activity</h4>
+                            <p class="gh-expandable-description">
+                               Enable recording of member activity for analytics
+                            </p>
+                        </div>
+                        <div class="for-switch">
+                           <GhFeatureFlag @flag="membersActivity" />
+                        </div>
+                    </div>
+                </div>
+                <div class="gh-expandable-block">
+                    <div class="gh-expandable-header">
+                        <div>
+                            <h4 class="gh-expandable-title">Offers</h4>
+                            <p class="gh-expandable-description">
+                               Provide targeted discounts to new signups
+                            </p>
+                        </div>
+                        <div class="for-switch">
+                           <GhFeatureFlag @flag="offers" />
                         </div>
                     </div>
                 </div>
@@ -302,5 +335,11 @@
 {{#if this.showDeleteAllModal}}
     <GhFullscreenModal @modal="delete-all"
         @close={{action "toggleDeleteAllModal"}}
+        @modifier="action wide" />
+{{/if}}
+
+{{#if this.showEnableTiersModal}}
+    <GhFullscreenModal @modal="enable-tiers"
+        @close={{action "toggleEnableTiersModal"}}
         @modifier="action wide" />
 {{/if}}

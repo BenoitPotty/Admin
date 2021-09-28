@@ -41,7 +41,9 @@
         @editor={{this.editor}}
         @snippetRange={{this.snippetRange}}
         @snippetRect={{this.snippetRect}}
+        @snippets={{@snippets}}
         @save={{@saveSnippet}}
+        @update={{@updateSnippet}}
         @cancel={{this.cancelAddSnippet}}
     />
 {{/if}}
@@ -54,6 +56,7 @@
     @deleteSnippet={{this.deleteSnippet}}
     @replaceWithCardSection={{action "replaceWithCardSection"}}
     @replaceWithPost={{action "replaceWithPost"}}
+    @postType={{@postType}}
 />
 
 {{!-- slash menu popup --}}
@@ -64,6 +67,7 @@
     @deleteSnippet={{this.deleteSnippet}}
     @replaceWithCardSection={{action "replaceWithCardSection"}}
     @replaceWithPost={{action "replaceWithPost"}}
+    @postType={{@postType}}
 />
 
 {{!-- all component cards wormholed into the editor canvas --}}
@@ -91,6 +95,18 @@
             moveCursorToNextSection=(action "moveCursorToNextSection" card)
             addParagraphAfterCard=(action "addParagraphAfterCard" card)
             registerComponent=(action (mut card.component))
+        }}
+    {{/in-element}}
+{{/each}}
+
+{{!-- all component atoms wormholed into the editor canvas --}}
+{{#each this.componentAtoms as |atom|}}
+    {{#in-element atom.destinationElement}}
+        {{component atom.componentName
+            editor=this.editor
+            atom=atom
+            saveAtom=(fn atom.env.save atom.env.value atom.env.payload)
+            registerComponent=(action (mut atom.component))
         }}
     {{/in-element}}
 {{/each}}

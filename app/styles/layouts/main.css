@@ -66,6 +66,10 @@
     max-width: 1600px;
 }
 
+.gh-main-fullwidth .gh-canvas {
+    max-width: 100%;
+}
+
 /*  Flexbox fix. https://github.com/TryGhost/Ghost/issues/5804#issuecomment-141416812 */
 .gh-main > section {
     width: 100%;
@@ -109,7 +113,7 @@
 }
 
 .gh-nav-menu-dropdown .dropdown-menu {
-    top: -360px;
+    top: -324px;
     left: -13px;
     margin: 10px 0 0;
     box-shadow: var(--box-shadow-m);
@@ -1069,6 +1073,10 @@
     border: none;
 }
 
+.gh-main-section-header.pt0 {
+    padding-top: 0;
+}
+
 .gh-main-section-description {
     color: var(--middarkgrey);
     border-bottom: 1px solid var(--whitegrey);
@@ -1233,13 +1241,13 @@
 }
 
 /* Grey background modifiers */
-.gh-main-section-content.grey .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red),
-.gh-expandable-content .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-black):not(.gh-btn-link) {
+.gh-main-section-content.grey .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-text),
+.gh-expandable-content .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-black):not(.gh-btn-link):not(.gh-btn-text) {
     background: var(--whitegrey-d2);
 }
 
-.gh-main-section-content.grey .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):hover,
-.gh-expandable-content .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-link):hover {
+.gh-main-section-content.grey .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-text):hover,
+.gh-expandable-content .gh-btn:not(.gh-btn-white):not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-link):not(.gh-btn-text):hover {
     background: color-mod(var(--whitegrey-d2) l(-4%));
 }
 
@@ -1275,6 +1283,18 @@
         grid-template-columns: 1fr;
         grid-row-gap: 32px;
     }
+}
+
+.gh-main-content-card {
+    border-radius: 3px;
+    padding: 24px;
+    background: var(--main-bg-color);
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px -1px rgba(0,0,0,0.1);
+}
+
+.gh-main-content-card:last-of-type {
+    margin-bottom: 24px;
 }
 
 /* Canvas */
@@ -1413,13 +1433,17 @@
     font-size: 1.35rem;
 }
 
-.view-actions .gh-btn:not(.gh-btn-primary):not(.gh-btn-blue):not(.gh-btn-green) {
+.view-actions .gh-btn {
+    cursor: pointer;
+}
+
+.view-actions .gh-btn:not(.gh-btn-primary):not(.gh-btn-blue):not(.gh-btn-green):not(.gh-btn-link) {
     border: none;
     box-shadow: none;
     background: color-mod(var(--whitegrey-l1) l(-3%));
 }
 
-.view-actions .gh-btn:not(.gh-btn-primary):not(.gh-btn-blue):not(.gh-btn-green):hover {
+.view-actions .gh-btn:not(.gh-btn-primary):not(.gh-btn-blue):not(.gh-btn-green):not(.gh-btn-link):hover {
     background: var(--whitegrey);
 }
 
@@ -1441,20 +1465,6 @@
     width: 16px;
     height: 16px;
     fill: color-mod(var(--midlightgrey) l(+5%));
-}
-
-.gh-actions-cog {
-    margin-right: 10px
-}
-
-.gh-actions-cog svg {
-    height: 16px;
-    width: 16px;
-    margin-right: 0;
-}
-
-.gh-actions-cog svg path {
-    stroke: currentColor;
 }
 
 .gh-actions-menu {

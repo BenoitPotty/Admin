@@ -22,7 +22,14 @@
 .gh-publishmenu {
     position: relative;
     z-index: 1000;
+    display: inherit;
     margin-right: 8px;
+}
+
+@media (max-width: 500px) {
+    .gh-publishmenu {
+        margin-right: 0;
+    }
 }
 
 .gh-publishmenu-dropdown {
@@ -31,7 +38,7 @@
     right: 0;
     margin: 5px 0 20px 0;
     padding: 0px;
-    width: 332px;
+    width: 336px;
     background-color: #fff;
     background-clip: padding-box;
     border-radius: 4px;
@@ -59,8 +66,42 @@
 .gh-publishmenu-heading {
     margin: 0 0 15px 0;
     padding: 20px 20px 0;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
+    font-weight: 400;
     line-height: 1.25em;
+}
+
+.gh-publishmenu-select {
+    display: inline-block;
+}
+
+.gh-publishmenu-select .ember-power-select-inline {
+    padding-right: 3px;
+    color: var(--black);
+    font-size: 1.7rem;
+    font-weight: 500;
+    line-height: 1.25em;
+}
+
+.gh-publishmenu-select .ember-power-select-inline svg {
+    width: 9px !important;
+    height: 5.6px !important;
+    margin: 0 !important;
+}
+
+.gh-publishmenu-select .ember-power-select-inline svg path {
+    stroke: var(--black) !important;
+    stroke-width: 4;
+}
+
+.gh-publishmenu-select-dropdown {
+    width: unset !important;
+    min-width: min-content !important;
+    margin-top: 4px;
+    border-top: 1px solid var(--input-border-color) !important;
+    font-size: 1.4rem;
+    white-space: nowrap;
+    border-radius: 3px !important;
 }
 
 .gh-publishmenu-content {

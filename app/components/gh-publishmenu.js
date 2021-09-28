@@ -22,6 +22,7 @@ export default Component.extend({
     displayState: 'draft',
     post: null,
     postStatus: 'draft',
+    distributionAction: 'publish_send',
     runningText: null,
     saveTask: null,
     sendEmailWhenPublished: null,
@@ -95,13 +96,26 @@ export default Component.extend({
         return runningText || 'Publishing';
     }),
 
-    buttonText: computed('postState', 'saveType', function () {
+    buttonText: computed('postState', 'saveType', 'distributionAction', function () {
         let saveType = this.saveType;
         let postState = this.postState;
+        let distributionAction = this.get('distributionAction');
         let buttonText;
 
         if (postState === 'draft') {
-            buttonText = saveType === 'publish' ? 'Publish' : 'Schedule';
+            let publishText = this.feature.emailOnlyPosts ? 'Publish & send' : 'Publish';
+
+            switch (distributionAction) {
+            case 'publish_send':
+                buttonText = (saveType === 'publish') ? publishText : 'Schedule';
+                break;
+            case 'publish':
+                buttonText = (saveType === 'publish') ? 'Publish' : 'Schedule';
+                break;
+            case 'send':
+                buttonText = saveType === 'publish' ? 'Send' : 'Schedule';
+                break;
+            }
         }
 
         if (postState === 'published') {
@@ -155,6 +169,10 @@ export default Component.extend({
                 return 'status:-free';
             }
 
+            if (this.post.visibility === 'filter') {
+                return this.post.visibilityFilter;
+            }
+
             return this.post.visibility;
         }
 
@@ -182,7 +200,7 @@ export default Component.extend({
 
         this._postStatus = this.postStatus;
         this.setDefaultSendEmailWhenPublished();
-        this.checkIsSendingEmailLimited();
+        this.checkIsSendingEmailLimitedTask.perform();
     },
 
     actions: {
@@ -202,6 +220,18 @@ export default Component.extend({
 
         setSendEmailWhenPublished(sendEmailWhenPublished) {
             this.set('sendEmailWhenPublished', sendEmailWhenPublished);
+        },
+
+        setDistributionAction(distributionAction) {
+            this.set('distributionAction', distributionAction);
+
+            if (distributionAction === 'publish') {
+                this.set('sendEmailWhenPublished', false);
+                this.set('post.emailRecipientFilter', 'none');
+            } else {
+                this.set('sendEmailWhenPublished', this.defaultEmailRecipients);
+                this.set('post.emailRecipientFilter', this.defaultEmailRecipients);
+            }
         },
 
         open() {
@@ -244,7 +274,9 @@ export default Component.extend({
     },
 
     setDefaultSendEmailWhenPublished() {
-        if (this.postStatus === 'draft' && this.canSendEmail) {
+        if (this.get('isSendingEmailLimited')) {
+            this.set('sendEmailWhenPublished', false);
+        } else if (this.postStatus === 'draft' && this.canSendEmail) {
             // Set default newsletter recipients
             this.set('sendEmailWhenPublished', this.defaultEmailRecipients);
         } else {
@@ -252,18 +284,18 @@ export default Component.extend({
         }
     },
 
-    checkIsSendingEmailLimited: action(function () {
-        if (this.limit.limiter && this.limit.limiter.isLimited('emails')) {
-            this.checkIsSendingEmailLimitedTask.perform();
-        } else {
-            this.set('isSendingEmailLimited', false);
-            this.set('sendingEmailLimitError', null);
-        }
-    }),
-
     checkIsSendingEmailLimitedTask: task(function* () {
         try {
-            yield this.limit.limiter.errorIfWouldGoOverLimit('emails');
+            yield this.reloadSettingsTask.perform();
+
+            if (this.limit.limiter && this.limit.limiter.isLimited('emails')) {
+                yield this.limit.limiter.errorIfWouldGoOverLimit('emails');
+            } else if (this.settings.get('emailVerificationRequired')) {
+                this.set('isSendingEmailLimited', true);
+                this.set('sendingEmailLimitError', 'Email sending is temporarily disabled because your account is currently in review. You should have an email about this from us already, but you can also reach us any time at support@ghost.org.');
+                this.set('sendEmailWhenPublished', 'none');
+                return;
+            }
 
             this.set('isSendingEmailLimited', false);
             this.set('sendingEmailLimitError', null);
@@ -349,13 +381,18 @@ export default Component.extend({
         this._cleanup();
     }),
 
+    reloadSettingsTask: task(function* () {
+        yield this.settings.reload();
+    }),
+
     save: task(function* ({dropdown} = {}) {
         let {
             post,
             sendEmailWhenPublished,
             sendEmailConfirmed,
             saveType,
-            typedDateError
+            typedDateError,
+            distributionAction
         } = this;
 
         // don't allow save if an invalid schedule date is present
@@ -379,6 +416,7 @@ export default Component.extend({
             post.status === 'draft' &&
             !post.email && // email sent previously
             sendEmailWhenPublished && sendEmailWhenPublished !== 'none' &&
+            distributionAction !== 'publish' &&
             !sendEmailConfirmed // set once confirmed so normal save happens
         ) {
             this.openEmailConfirmationModal(dropdown);
@@ -420,5 +458,9 @@ export default Component.extend({
 
         this.post.set('statusScratch', null);
         this.post.validate();
+        // TODO: confirm with Naz why this is needed and find a different solution
+        //  - we shouldn't be saving post data every time the menu is closed,
+        //    especially when the user has chosen to cancel/close the menu without saving
+        // this.post.save();
     }
 });

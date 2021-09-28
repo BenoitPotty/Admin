@@ -6,7 +6,7 @@
 */
 @import "spirit/spirit-dark.css";
 
-/* Patterns: Groups of Styles
+/* Patterns
 /* ---------------------------------------------------------- */
 @import "patterns/global.css";
 @import "patterns/icons.css";
@@ -17,11 +17,11 @@
 @import "patterns/navlist.css";
 @import "patterns/boxes.css";
 
-
-/* Components: Groups of Patterns
+/* Components
 /* ---------------------------------------------------------- */
 @import "components/loading-indicator.css";
 @import "components/modals.css";
+@import "components/modals-new.css";
 @import "components/notifications.css";
 @import "components/uploader.css";
 @import "components/splitbuttons.css";
@@ -31,6 +31,8 @@
 @import "components/settings-menu.css";
 @import "components/power-select.css";
 @import "components/power-calendar.css";
+@import "components/koenig.css";
+@import "components/koenig-dark.css";
 @import "components/publishmenu.css";
 @import "components/popovers.css";
 @import "components/unsplash.css";
@@ -40,9 +42,10 @@
 @import "components/browser-preview.css";
 @import "components/stacks.css";
 @import "components/browser-preview.css";
+@import "components/filter-builder.css";
 
 
-/* Layouts: Groups of Components
+/* Layouts
 /* ---------------------------------------------------------- */
 @import "layouts/main.css";
 @import "layouts/flow.css";
@@ -52,14 +55,13 @@
 @import "layouts/settings.css";
 @import "layouts/users.css";
 @import "layouts/user.css";
-@import "layouts/about.css";
+@import "layouts/whatsnew.css";
 @import "layouts/tags.css";
 @import "layouts/members.css";
 @import "layouts/error.css";
 @import "layouts/apps.css";
 @import "layouts/packages.css";
 @import "layouts/labs.css";
-@import "layouts/whats-new.css";
 @import "layouts/preview-email.css";
 @import "layouts/portal-settings.css";
 @import "layouts/billing.css";
@@ -158,8 +160,12 @@ input:focus,
     background: var(--white);
 }
 
-.settings-menu-container {
-    background: var(--main-color-content-greybg);
+.settings-menu-header {
+    background: var(--dark-main-bg-color);
+}
+
+.settings-menu-container .settings-menu-pane {
+    background: var(--dark-main-bg-color);
 }
 
 @media (max-width: 800px) {
@@ -246,18 +252,26 @@ input:focus,
     background: var(--black) !important;
 }
 
-.gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-primary):not(.gh-btn-black):not(.gh-btn-text) {
+.gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-primary):not(.gh-btn-black):not(.gh-btn-text):not(.gh-btn-accent) {
     background: var(--lightgrey);
     color: var(--black);
 }
 
-.gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-primary):not(.gh-btn-black):not(.gh-btn-text):hover {
+.gh-btn:not(.gh-btn-green):not(.gh-btn-blue):not(.gh-btn-red):not(.gh-btn-primary):not(.gh-btn-black):not(.gh-btn-text):not(.gh-btn-accent):hover {
     background: var(--lightgrey-d1);
     color: var(--black);
 }
 
+.gh-btn-group {
+    background: var(--whitegrey-l2);
+}
+
 .gh-btn-group .gh-btn:first-of-type {
     border-right: none !important;
+}
+
+.gh-btn-group .gh-btn-group-selected span {
+    background: var(--lightgrey-l1) !important;
 }
 
 .gh-btn-blue,
@@ -319,6 +333,7 @@ input:focus,
     color: var(--red);
     border: none !important;
     border-color: transparent;
+    background: var(--dark-main-bg-color) !important;
 }
 
 .gh-publishmenu-trigger {
@@ -347,6 +362,16 @@ input:focus,
 
 .editor-toolbar a.active, .editor-toolbar a:hover {
     background-color: rgba(0,0,0,0.3);
+}
+
+.email-cta-toolbar,
+.email-cta-toolbar .borders,
+.email-cta-toolbar .email-cta-align {
+    border-color: var(--lightgrey);
+}
+
+.email-cta-toolbar .gh-btn {
+    background: var(--dark-main-bg-color) !important;
 }
 
 .gh-badge-black,
@@ -443,7 +468,7 @@ input:focus,
     border-color: #fff;
 }
 
-.gh-logo,
+.gh-about-logo svg,
 .apps-card-app-orb,
 .gh-nav-logo-default,
 .gh-unsplash-logo {
@@ -732,8 +757,28 @@ input:focus,
     background: var(--green) !important;
 }
 
-.settings-menu-delete-button {
-    background: var(--main-color-content-greybg) !important;
+.gh-editor-feature-image-add-button {
+    color: var(--midgrey);
+}
+
+.gh-editor-feature-image-add-button:hover {
+    color: var(--darkgrey);
+}
+
+.gh-editor-feature-image-add-button:hover svg path {
+    stroke: var(--darkgrey);
+}
+
+.gh-editor-feature-image-unsplash svg {
+    fill: var(--midgrey);
+}
+
+.gh-editor-feature-image-unsplash svg:hover {
+    fill: var(--darkgrey);
+}
+
+.gh-editor-wordcount-container {
+    background: var(--dark-main-bg-color);
 }
 
 /* Segment input */
@@ -935,4 +980,16 @@ input:focus,
 .gh-whats-new-badge-account {
     top: 0;
     right: -2px;
+}
+
+.gh-list-scrolling thead th {
+    background: linear-gradient(90deg, rgba(21,23,25,1) 90%, rgba(21,23,25,0) 100%);
+}
+
+.gh-list-scrolling tbody .gh-list-data:first-child {
+    background: linear-gradient(90deg, rgba(21,23,25,1) 90%, rgba(21,23,25,0) 100%);
+}
+
+.gh-filter-builder .gh-filters {
+    background: var(--whitegrey);
 }

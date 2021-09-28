@@ -27,7 +27,9 @@ export default ModalComponent.extend({
     paramName: 'membersfile',
     importResponse: null,
     errorMessage: null,
+    errorHeader: null,
     showMappingErrors: false,
+    showTryAgainButton: true,
 
     // Allowed actions
     confirm: () => {},
@@ -83,9 +85,11 @@ export default ModalComponent.extend({
         reset() {
             this.set('showMappingErrors', false);
             this.set('errorMessage', null);
+            this.set('errorHeader', null);
             this.set('file', null);
             this.set('mapping', null);
             this.set('state', 'INIT');
+            this.set('showTryAgainButton', true);
         },
 
         closeModal() {
@@ -194,6 +198,7 @@ export default ModalComponent.extend({
 
     _uploadError(error) {
         let message;
+        let header = 'Import error';
 
         if (isVersionMismatchError(error)) {
             this.notifications.showAPIError(error);
@@ -205,11 +210,19 @@ export default ModalComponent.extend({
             message = 'The file you uploaded was larger than the maximum file size your server allows.';
         } else if (error.payload && error.payload.errors && !isBlank(error.payload.errors[0].message)) {
             message = htmlSafe(error.payload.errors[0].message);
+
+            if (error.payload.errors[0].message.match(/great deliverability/gi)) {
+                header = 'Woah there cowboy, that\'s a big list';
+                this.set('showTryAgainButton', false);
+                // NOTE: confirm makes sure to refresh the members data in the background
+                this.confirm();
+            }
         } else {
             console.error(error); // eslint-disable-line
             message = 'Something went wrong :(';
         }
 
         this.set('errorMessage', message);
+        this.set('errorHeader', header);
     }
 });

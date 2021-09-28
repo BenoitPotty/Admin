@@ -67,17 +67,23 @@ const messageMap = {
             published: {
                 published: 'Updated',
                 draft: 'Saved',
-                scheduled: 'Scheduled'
+                scheduled: 'Scheduled',
+                sent: 'Sent'
             },
             draft: {
                 published: 'Published',
                 draft: 'Saved',
-                scheduled: 'Scheduled'
+                scheduled: 'Scheduled',
+                sent: 'Sent'
             },
             scheduled: {
                 scheduled: 'Updated',
                 draft: 'Unscheduled',
-                published: 'Published'
+                published: 'Published',
+                sent: 'Sent'
+            },
+            sent: {
+                sent: 'Sent'
             }
         }
     }
@@ -89,6 +95,7 @@ export default Controller.extend({
     config: service(),
     feature: service(),
     membersCountCache: service(),
+    modals: service(),
     notifications: service(),
     router: service(),
     slugGenerator: service(),
@@ -100,7 +107,6 @@ export default Controller.extend({
 
     leaveEditorTransition: null,
     shouldFocusTitle: false,
-    showDeletePostModal: false,
     showLeaveEditorModal: false,
     showReAuthenticateModal: false,
     showEmailPreviewModal: false,
@@ -269,9 +275,13 @@ export default Controller.extend({
             return transition.retry();
         },
 
-        toggleDeletePostModal() {
+        openDeletePostModal() {
             if (!this.get('post.isNew')) {
-                this.toggleProperty('showDeletePostModal');
+                this.modals.open('modals/delete-post', {
+                    post: this.post
+                }, {
+                    className: 'fullscreen-modal fullscreen-modal-action fullscreen-modal-wide'
+                });
             }
         },
 
@@ -279,8 +289,16 @@ export default Controller.extend({
             this.toggleProperty('showEmailPreviewModal');
         },
 
-        togglePostPreviewModal() {
-            this.toggleProperty('showPostPreviewModal');
+        openPostPreviewModal() {
+            this.modals.open('modals/post-preview', {
+                post: this.post,
+                saveTask: this.saveTask,
+                // TODO: update to call action method directly when switching to class syntax
+                setEditorSaveType: this.actions.setSaveType.bind(this),
+                memberCount: this.memberCount
+            }, {
+                className: 'fullscreen-modal fullscreen-modal-full-overlay fullscreen-modal-email-preview'
+            });
         },
 
         toggleReAuthenticateModal() {
@@ -384,6 +402,42 @@ export default Controller.extend({
         });
     }),
 
+    toggleUpdateSnippetModal: action(function (snippetRecord, updatedProperties = {}) {
+        if (snippetRecord) {
+            this.set('snippetToUpdate', {snippetRecord, updatedProperties});
+        } else {
+            this.set('snippetToUpdate', null);
+        }
+    }),
+
+    updateSnippet: action(function () {
+        if (!this.snippetToUpdate) {
+            return Promise.reject();
+        }
+
+        const {snippetRecord, updatedProperties: {mobiledoc}} = this.snippetToUpdate;
+        snippetRecord.set('mobiledoc', mobiledoc);
+
+        return snippetRecord.save().then(() => {
+            this.set('snippetToUpdate', null);
+            this.notifications.closeAlerts('snippet.save');
+            this.notifications.showNotification(
+                `Snippet "${snippetRecord.name}" updated`,
+                {type: 'success'}
+            );
+            return snippetRecord;
+        }).catch((error) => {
+            if (!snippetRecord.errors.isEmpty) {
+                this.notifications.showAlert(
+                    `Snippet save failed: ${snippetRecord.errors.messages.join('. ')}`,
+                    {type: 'error', key: 'snippet.save'}
+                );
+            }
+            snippetRecord.rollbackAttributes();
+            throw error;
+        });
+    }),
+
     toggleDeleteSnippetModal: action(function (snippet) {
         this.set('snippetToDelete', snippet);
     }),
@@ -428,6 +482,8 @@ export default Controller.extend({
                     status = 'published';
                 } else if (this.willSchedule && !this.get('post.isPublished')) {
                     status = 'scheduled';
+                } else if (this.get('post.isSent')) {
+                    status = 'sent';
                 } else {
                     status = 'draft';
                 }
@@ -956,7 +1012,7 @@ export default Controller.extend({
             actions = `<a href="${path}" target="_blank">View ${type}</a>`;
         }
 
-        notifications.showNotification(message, {type: 'success', actions: (actions && actions.htmlSafe()), delayed});
+        notifications.showNotification(message, {type: 'success', actions: (actions && htmlSafe(actions)), delayed});
     },
 
     async _showScheduledNotification(delayed) {
@@ -984,9 +1040,9 @@ export default Controller.extend({
             description.push(`(UTC${publishedAtBlogTZ.format('Z').replace(/([+-])0/, '$1').replace(/:00/, '')})</span>`);
         }
 
-        description = description.join(' ').htmlSafe();
+        description = htmlSafe(description.join(' '));
 
-        let actions = `<a href="${previewUrl}" target="_blank">View Preview</a>`.htmlSafe();
+        let actions = htmlSafe(`<a href="${previewUrl}" target="_blank">View Preview</a>`);
 
         return this.notifications.showNotification(title, {description, actions, type: 'success', delayed});
     },
