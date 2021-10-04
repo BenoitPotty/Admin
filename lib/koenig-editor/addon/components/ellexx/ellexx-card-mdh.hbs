@@ -1,5 +1,4 @@
 <KoenigCard
-    @icon="koenig/card-indicator-markdown"
     @class="kg-card-hover"
     @headerOffset={{this.headerOffset}}
     @toolbar={{this.toolbar}}
@@ -19,7 +18,7 @@
         <h6>Markdown Header</h6>
         <p></p>
         <p></p>
-        <div>
+        <div class="m4">
             {{#if this.isEditing}}
                 <GhEditor as |editor|>
                     <GhScrollTrigger

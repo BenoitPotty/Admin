@@ -1,0 +1,59 @@
+<KoenigCard
+    @tagName="figure"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @saveAsSnippet={{this.saveAsSnippet}}
+    @toolbar={{this.toolbar}}
+    @hasEditMode={{false}}
+    @addParagraphAfterCard={{this.addParagraphAfterCard}}
+    @moveCursorToPrevSection={{this.moveCursorToPrevSection}}
+    @moveCursorToNextSection={{this.moveCursorToNextSection}}
+    @editor={{this.editor}}
+    as |card|
+>
+    <div class="m4 pa4 ba">
+        <h6 class="ttc">Video (Quick Content)</h6>
+        <p></p>
+        <p></p>
+        <div class="underline ttc">{{this.payload.type}}</div>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Video:
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        placeholder="Link"
+                        type="text"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="vid_video_link"
+                        value={{this.payload.vid_video_link}}
+                        {{on "change" this.updateYoutubeLink}}
+                    />
+                    {{#if tbi_video_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+        <p></p>
+        <div class="tc">
+            {{#if this.videoCode}}
+                <iframe
+                    width="607"
+                    height="350"
+                    src="https://www.youtube.com/embed/{{this.payload.tbi_video_link_code}}"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                ></iframe>
+            {{/if}}
+        </div>
+    </div>
+</KoenigCard>

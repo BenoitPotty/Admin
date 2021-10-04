@@ -1,5 +1,4 @@
 <KoenigCard
-    @icon="ellexx/card-indicator-zit"
     @class="kg-card-hover"
     @isSelected={{this.isSelected}}
     @isEditing={{this.isEditing}}
@@ -9,59 +8,74 @@
     @hasEditMode={{false}}
     @editor={{this.editor}}
 >
-
-    <div class="mb4">
-        <div class="mb4">
-            <input
-                type="radio"
-                id="usage_quick_content"
-                value="quick-content"
-                name='zit_usage'
-                checked={{eq 'quick-content' this.payload.zit_usage}}
-                {{on "change" this.updateUsage}}
-            >
-            <label for="usage_quick_content">Quick Content</label>
-            <input
-                type="radio"
-                id="usage_post"
-                value="artikel"
-                name='zit_usage'
-                checked={{eq 'artikel' this.payload.zit_usage}}
-                {{on "change" this.updateUsage}}
-            >
-            <label for="usage_post">Artikel</label>
+    <div class="m4 pa4 ba">
+        <h6>Zitat (Im artikel oder Quick Content)</h6>
+        <p></p>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Usage :
+                </div>
+                <div class="gh-list-cell">
+                    <select
+                        placeholder="Usage"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zit_usage"
+                        value={{this.payload.zit_usage}}
+                        {{on "change" this.updateUsage}}
+                    >
+                        <option value="quick-content">Quick Content</option>
+                        <option value="artikel">Artikel</option>
+                    </select>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Zitat :</div>
+                <div class="gh-list-cell">
+                    <textarea
+                        placeholder="Zitat"
+                        maxlength="{{this.zit_quote_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zit_quote"
+                        value={{this.payload.zit_quote}}
+                        {{on "input" this.updateFieldWithLength}}
+                    ></textarea>
+                    <div class="tr f-small">{{this.zit_quote_length}}
+                        /
+                        {{this.zit_quote_max}}
+                    </div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Author :</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Autor"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zit_author"
+                        value={{this.payload.zit_author}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Link :</div>
+                <div class="gh-list-cell"><input
+                        type="text"
+                        placeholder="Link"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zit_link"
+                        value={{this.payload.zit_link}}
+                        {{on "blur" this.updateLink}}
+                    />
+                    {{#if fdw_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+            </div>
         </div>
-        <textarea
-            placeholder="Zitat"
-            maxlength="{{this.zit_quote_max}}"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zit_quote"
-            value={{this.payload.zit_quote}}
-            {{on "input" this.updateFieldWithLength}}
-        ></textarea>
-        <div class="tr f-small">{{this.zit_quote_length}} / {{this.zit_quote_max}}</div>
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Autor"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zit_author"
-            value={{this.payload.zit_author}}
-            {{on "blur" this.updateField}}
-        />
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Link"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zit_link"
-            value={{this.payload.zit_link}}
-            {{on "blur" this.updateLink}}
-        />
-        {{#if fdw_link_invalid}}
-            <div class="tr f-small red pb4">URL is nicht gültig</div>
-        {{/if}}
     </div>
 </KoenigCard>

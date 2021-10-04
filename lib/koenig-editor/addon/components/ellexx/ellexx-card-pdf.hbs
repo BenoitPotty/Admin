@@ -1,6 +1,5 @@
 <KoenigCard
     @tagName="figure"
-    @icon="ellexx/card-indicator-pdf"
     @class="kg-card-hover"
     @isSelected={{this.isSelected}}
     @isEditing={{this.isEditing}}
@@ -23,24 +22,16 @@
         <div class="underline">Sichtbarkeit</div>
         <p></p>
         <div>
-            <input
-                type="radio"
-                id="free"
-                value="free"
-                name='pdf_visibility'
-                checked={{eq 'free' this.payload.pdf_visibility}}
+             <select
+                placeholder="Sprache"
+                class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                name="pdf_visibility"
+                value={{this.payload.pdf_visibility}}
                 {{on "change" this.updateField}}
             >
-            <label for="free">Gratis</label>
-            <input
-                type="radio"
-                id="paid"
-                value="paid"
-                name='pdf_visibility'
-                checked={{eq 'paid' this.payload.pdf_visibility}}
-                {{on "change" this.updateField}}
-            >
-            <label for="paid">Members</label>
+                <option value="free">Gratis</option>
+                <option value="paid">Members</option>
+            </select>
         </div>
         <p></p>
         <p></p>

@@ -1,5 +1,4 @@
 <KoenigCard
-    @icon="ellexx/card-indicator-zdt"
     @class="kg-card-hover"
     @isSelected={{this.isSelected}}
     @isEditing={{this.isEditing}}
@@ -10,50 +9,76 @@
     @editor={{this.editor}}
 >
 
-    <div class="mb4">
-        <input
-            type="text"
-            maxlength="{{this.zdt_number_max}}"
-            placeholder="Zahl"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zdt_number"
-            value={{this.payload.zdt_number}}
-            {{on "input" this.updateFieldWithLength}}
-        >
-        <div class="tr f-small">{{this.zdt_number_length}} / {{this.zdt_number_max}}</div>
-    </div>
-    <div class="mb4">
-        <textarea
-            placeholder="Inhalt Kontext"
-            maxlength="{{this.zdt_content_max}}"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zdt_content"
-            value={{this.payload.zdt_content}}
-            {{on "input" this.updateFieldWithLength}}
-        ></textarea>
-        <div class="tr f-small">{{this.zdt_content_length}} / {{this.zdt_content_max}}</div>
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Quelle"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zdt_source"
-            value={{this.payload.zdt_source}}
-            {{on "blur" this.updateField}}
-        />
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Link"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="zdt_link"
-            value={{this.payload.zdt_link}}
-            {{on "blur" this.updateLink}}
-        />
-        {{#if zdt_link_invalid}}
-            <div class="tr f-small red pb4">URL is nicht gültig</div>
-        {{/if}}
+    <div class="m4 pa4 ba">
+        <h6>Money Talk Facts</h6>
+        <p></p>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Zahl :</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        maxlength="{{this.zdt_number_max}}"
+                        placeholder="Zahl"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zdt_number"
+                        value={{this.payload.zdt_number}}
+                        {{on "input" this.updateFieldWithLength}}
+                    />
+                    <div class="tr f-small">{{this.zdt_number_length}}
+                        /
+                        {{this.zdt_number_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Inhalt Kontext :</div>
+                <div class="gh-list-cell">
+                    <textarea
+                        placeholder="Inhalt Kontext"
+                        maxlength="{{this.zdt_content_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zdt_content"
+                        value={{this.payload.zdt_content}}
+                        {{on "input" this.updateFieldWithLength}}
+                    ></textarea>
+                    <div class="tr f-small">{{this.zdt_content_length}}
+                        /
+                        {{this.zdt_content_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Quelle :</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Quelle"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zdt_source"
+                        value={{this.payload.zdt_source}}
+                        {{on "blur" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Link :</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Link"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="zdt_link"
+                        value={{this.payload.zdt_link}}
+                        {{on "blur" this.updateLink}}
+                    />
+                    {{#if zdt_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+                <p></p>
+            </div>
+        </div>
     </div>
 </KoenigCard>

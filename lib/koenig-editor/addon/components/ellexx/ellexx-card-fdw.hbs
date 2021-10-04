@@ -1,5 +1,4 @@
 <KoenigCard
-    @icon="ellexx/card-indicator-fdw"
     @class="kg-card-hover"
     @isSelected={{this.isSelected}}
     @isEditing={{this.isEditing}}
@@ -10,28 +9,48 @@
     @editor={{this.editor}}
 >
 
-    <div class="mb4">
-        <textarea
-            placeholder="Frage"
-            maxlength="{{this.fdw_sentence_max}}"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="fdw_sentence"
-            value={{this.payload.fdw_sentence}}
-            {{on "input" this.updateFieldWithLength}}
-        ></textarea>
-        <div class="tr f-small">{{this.fdw_sentence_length}} / {{this.fdw_sentence_max}}</div>
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Link"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="fdw_link"
-            value={{this.payload.fdw_link}}
-            {{on "blur" this.updateLink}}
-        />
-        {{#if fdw_link_invalid}}
-            <div class="tr f-small red pb4">URL is nicht gültig</div>
-        {{/if}}
+    <div class="mb4 pa4 ba">
+        <h6>Frage der Woche (Quick Content)</h6>
+        <p></p>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Frage :
+                </div>
+                <div class="gh-list-cell">
+                    <textarea
+                        placeholder="Frage"
+                        maxlength="{{this.fdw_sentence_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="fdw_sentence"
+                        value={{this.payload.fdw_sentence}}
+                        {{on "input" this.updateFieldWithLength}}
+                    ></textarea>
+                    <div class="tr f-small">{{this.fdw_sentence_length}}
+                        /
+                        {{this.fdw_sentence_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Link :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Link"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="fdw_link"
+                        value={{this.payload.fdw_link}}
+                        {{on "blur" this.updateLink}}
+                    />
+                    {{#if fdw_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
     </div>
 </KoenigCard>

@@ -1,5 +1,4 @@
 <KoenigCard
-    @icon="ellexx/card-indicator-lnk"
     @class="kg-card-hover"
     @isSelected={{this.isSelected}}
     @isEditing={{this.isEditing}}
@@ -10,41 +9,63 @@
     @editor={{this.editor}}
 >
 
-    <div class="mb4">
-        <input
-            type="text"
-            placeholder="Titel"
-            maxlength="{{this.lnk_title_max}}"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="lnk_title"
-            value={{this.payload.lnk_title}}
-            {{on "input" this.updateFieldWithLength}}
-        />
-        <div class="tr f-small">{{this.lnk_title_length}} / {{this.lnk_title_max}}</div>
-    </div>
-    <div class="mb4">
-        <input
-            type="text"
-            placeholder="Quelle"
-            maxlength="{{this.lnk_source_max}}"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="lnk_source"
-            value={{this.payload.lnk_source}}
-            {{on "input" this.updateFieldWithLength}}
-        />
-        <div class="tr f-small">{{this.lnk_source_length}} / {{this.lnk_source_max}}</div>
-    </div>
-    <div>
-        <input
-            type="text"
-            placeholder="Link"
-            class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
-            name="lnk_link"
-            value={{this.payload.lnk_link}}
-            {{on "input" this.updateLink}}
-        />
-        {{#if lnk_link_invalid}}
-            <div class="tr f-small red pb4">URL is nicht gültig</div>
-        {{/if}}
+    <div class="m4 pa4 ba">
+        <h6>Currated Link</h6>
+        <p></p>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Titel :</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Titel"
+                        maxlength="{{this.lnk_title_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="lnk_title"
+                        value={{this.payload.lnk_title}}
+                        {{on "input" this.updateFieldWithLength}}
+                    />
+                    <div class="tr f-small">{{this.lnk_title_length}}
+                        /
+                        {{this.lnk_title_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Quelle</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Quelle"
+                        maxlength="{{this.lnk_source_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="lnk_source"
+                        value={{this.payload.lnk_source}}
+                        {{on "input" this.updateFieldWithLength}}
+                    />
+                    <div class="tr f-small">{{this.lnk_source_length}}
+                        /
+                        {{this.lnk_source_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Link</div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Link"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="lnk_link"
+                        value={{this.payload.lnk_link}}
+                        {{on "input" this.updateLink}}
+                    />
+                    {{#if lnk_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
     </div>
 </KoenigCard>
