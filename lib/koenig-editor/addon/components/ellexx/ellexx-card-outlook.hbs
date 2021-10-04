@@ -1,0 +1,90 @@
+<KoenigCard
+    @icon="ellexx/card-indicator-outllok"
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div class="m4 pa4 ba">
+        <h6>Outlook</h6>
+        <p></p>
+        <p></p>
+        <div class="underline">Einzelheiten</div>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Titel :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Titel"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="outlook_title"
+                        value={{this.payload.outlook_title}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Text :
+                </div>
+                <div class="gh-list-cell">
+                    <textarea
+                        placeholder="Text"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="outlook_text"
+                        value={{this.payload.outlook_text}}
+                        {{on "input" this.updateField}}
+                    ></textarea>
+                </div>
+            </div>
+        </div>
+        <p></p>
+        <p></p>
+        <div class="underline">CTA Einzelheiten</div>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Link:
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        placeholder="Link"
+                        type="text"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="outlook_cta_link"
+                        value={{this.payload.outlook_cta_link}}
+                        {{on "change" this.updateLink}}
+                    />
+                    {{#if outlook_cta_link_invalid}}
+                        <div class="tr f-small red pb4">URL is nicht gültig</div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Text :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Text"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="outlook_cta_text"
+                        value={{this.payload.outlook_cta_text}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</KoenigCard>
