@@ -1,0 +1,36 @@
+<KoenigCard
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+
+    <div class="m4 pa4 ba">
+        <h6>Mini Excerpt</h6>
+        <p></p>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">Content :</div>
+                <div class="gh-list-cell">
+                    <textarea
+                        placeholder="Content"
+                        maxlength="{{this.mini_content_max}}"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="mini_content"
+                        value={{this.payload.mini_content}}
+                        {{on "input" this.updateFieldWithLength}}
+                    ></textarea>
+                    <div class="tr f-small">{{this.mini_content_length}}
+                        /
+                        {{this.mini_content_max}}</div>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</KoenigCard>
