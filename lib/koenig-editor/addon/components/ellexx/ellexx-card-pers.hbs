@@ -121,6 +121,25 @@
         <div class="gh-list">
             <div class="gh-list-row">
                 <div class="gh-list-cell">
+                    Typ :
+                </div>
+                <div class="gh-list-cell">
+                    <select
+                        placeholder="Typ"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="pers_type"
+                        value={{this.payload.pers_type}}
+                        {{on "change" this.updateField}}
+                    >
+                        <option value="founder">Gründerin</option>
+                        <option value="team">Team</option>
+                        <option value="advisory">Beratung</option>
+                        <option value="contact">Kontact</option>
+                    </select>
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
                     Name :
                 </div>
                 <div class="gh-list-cell">
