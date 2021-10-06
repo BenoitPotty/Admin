@@ -1,0 +1,139 @@
+<KoenigCard
+    @class="kg-card-hover"
+    @isSelected={{this.isSelected}}
+    @isEditing={{this.isEditing}}
+    @selectCard={{action this.selectCard}}
+    @deselectCard={{action this.deselectCard}}
+    @editCard={{action this.editCard}}
+    @hasEditMode={{false}}
+    @editor={{this.editor}}
+>
+    <style>
+        .koenig-editor .gh-markdown-editor .editor-toolbar {
+            position: relative;
+        }
+    </style>
+
+    <div class="m4 pa4 ba">
+        <h6>Vertical Collection</h6>
+        <p></p>
+        <p></p>
+        <div class="underline">Einzelheiten</div>
+        <p></p>
+        <div class="gh-list">
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Titel :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Titel"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="vcol_title"
+                        value={{this.payload.vcol_title}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Untertitel :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Untertitel"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="vcol_subtitle"
+                        value={{this.payload.vcol_subtitle}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Zusammenfassung:
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="checkbox"
+                        name="vcol_generate_summary"
+                        checked={{this.payload.vcol_generate_summary}}
+                        {{on "change" this.updateCheckbox}}
+                    />
+                </div>
+                <p></p>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Zusammenfassung titel :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Zusammenfassung titel"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="vcol_summary_title"
+                        value={{this.payload.vcol_summary_title}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+            <div class="gh-list-row">
+                <div class="gh-list-cell">
+                    Text zu Ende :
+                </div>
+                <div class="gh-list-cell">
+                    <input
+                        type="text"
+                        placeholder="Text zu Ende"
+                        class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                        name="vcol_text_to_end"
+                        value={{this.payload.vcol_text_to_end}}
+                        {{on "input" this.updateField}}
+                    />
+                </div>
+            </div>
+        </div>
+        <p></p>
+        <p></p>
+        <div class="underline">Items</div>
+        <p></p>
+        <div>
+            {{#each this.payload.items as |item|}}
+
+                <div><b>Item</b> <a {{action "deleteItem" item}}>Delete</a></div>
+                <p></p>
+
+                <input
+                    type="text"
+                    placeholder="Title"
+                    class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                    name="vcol_text_to_end"
+                    value={{item.title}}
+                    {{on "input" (fn this.updateItemTitle item)}}
+                />
+
+                <KoenigCard @class="kg-card-hover">
+                    <GhMarkdownEditor
+                        @markdown={{readonly item.markdown}}
+                        @onChange={{action "updateMarkdown" item}}
+                        @autofocus={{true}}
+                        @enableSideBySide={{false}}
+                        @enablePreview={{false}}
+                        @enableHemingway={{false}}
+                        @options={{hash status=false}}
+                        as |markdown|
+                    >
+                        {{markdown.editor}}
+                    </GhMarkdownEditor>
+                </KoenigCard>
+
+            {{/each}}
+        </div>
+        <div>
+            <a {{action "addItem"}}><span>Item hinzufügen</span></a>
+        </div>
+    </div>
+</KoenigCard>
