@@ -25,8 +25,16 @@
                         value={{this.payload.zit_usage}}
                         {{on "change" this.updateUsage}}
                     >
-                        <option value="quick-content">Quick Content</option>
-                        <option value="artikel">Artikel</option>
+                        {{#if (eq this.payload.zit_usage 'quick-content')}}
+                            <option value="quick-content" selected>Quick Content</option>
+                        {{else}}
+                            <option value="quick-content">Quick Content</option>
+                        {{/if}}
+                        {{#if (eq this.payload.zit_usage 'artikel')}}
+                            <option value="artikel" selected>Artikel</option>
+                        {{else}}
+                            <option value="artikel">Artikel</option>
+                        {{/if}}
                     </select>
                 </div>
             </div>

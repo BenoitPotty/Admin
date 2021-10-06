@@ -19,11 +19,18 @@
                 placeholder="Sprache"
                 class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
                 name="mtf_lang"
-                value={{this.payload.mtf_lang}}
                 {{on "change" this.updateField}}
             >
-                <option value="de">German</option>
-                <option value="en">English</option>
+                {{#if (eq this.payload.mtf_lang "de")}}
+                    <option value="de" selected>German</option>
+                {{else}}
+                    <option value="de">German</option>
+                {{/if}}
+                {{#if (eq this.payload.mtf_lang "en")}}
+                    <option value="en" selected>English</option>
+                {{else}}
+                    <option value="en">English</option>
+                {{/if}}
             </select>
         </div>
         <p></p>
