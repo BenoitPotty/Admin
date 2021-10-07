@@ -102,7 +102,7 @@
         <p></p>
         <div>
             {{#each this.payload.items as |item|}}
-
+            <div class="ba mb4 pa4">
                 <div><b>Item</b> <a {{action "deleteItem" item}}>Delete</a></div>
                 <p></p>
 
@@ -113,6 +113,14 @@
                     name="vcol_text_to_end"
                     value={{item.title}}
                     {{on "input" (fn this.updateItemTitle item)}}
+                />
+                <input
+                    type="number"
+                    placeholder="order"
+                    class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                    name="vcol_order"
+                    value={{item.order}}
+                    {{on "input" (fn this.updateItemOrder item)}}
                 />
 
                 <KoenigCard @class="kg-card-hover">
@@ -129,7 +137,7 @@
                         {{markdown.editor}}
                     </GhMarkdownEditor>
                 </KoenigCard>
-
+            </div>
             {{/each}}
         </div>
         <div>
