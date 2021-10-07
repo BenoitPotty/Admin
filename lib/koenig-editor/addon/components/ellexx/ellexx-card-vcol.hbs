@@ -122,6 +122,14 @@
                     value={{item.order}}
                     {{on "input" (fn this.updateItemOrder item)}}
                 />
+                <input
+                    type="text"
+                    placeholder="Image Link"
+                    class="miw-100 pa2 ba br2 b--lightgrey-d2 f7 form-text lh-title tracked-2 h10 mb2"
+                    name="vcol_img_src"
+                    value={{item.img_src}}
+                    {{on "input" (fn this.updateImgUrl item)}}
+                />
 
                 <KoenigCard @class="kg-card-hover">
                     <GhMarkdownEditor
